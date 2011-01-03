@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Detergent.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Detergent.snk</AssemblyOriginatorKeyFile>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -91,6 +91,7 @@
     <Compile Include="Mime\MultipartMessageParserException.cs" />
     <Compile Include="Mime\MultipartMessagePart.cs" />
     <Compile Include="Mime\MultipartStreamWriter.cs" />
+    <Compile Include="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="Templating\CacheableFileTemplate.cs" />
     <Compile Include="Templating\FileTemplate.cs" />
     <Compile Include="HttpListenerWrappedContext.cs" />
@@ -150,6 +151,9 @@
     <Compile Include="Soap\SimpleSoapRequestRouter.cs" />
     <Compile Include="Soap\SoapClientException.cs" />
     <Compile Include="Soap\SoapConstants.cs" />
+    <None Include="..\Detergent.snk">
+      <Link>Detergent.snk</Link>
+    </None>
     <None Include="Soap\SoapEnvelope.cs" />
     <Compile Include="Soap\SoapFault.cs" />
     <Compile Include="Soap\SoapFaultCode.cs" />
@@ -161,9 +165,6 @@
     <Compile Include="Soap\TemplateSoapEnvelope.cs" />
     <Compile Include="WebPages\IWebPage.cs" />
     <Compile Include="WebPages\WebPage.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Detergent.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\lib\Microsoft StyleCop\Microsoft.StyleCop.Targets" />

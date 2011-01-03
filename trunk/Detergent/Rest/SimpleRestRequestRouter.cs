@@ -27,7 +27,8 @@ namespace Detergent.Rest
                 if (matchData == null)
                     continue;
 
-                pair.Value.Handle(context, matchData);
+                IHttpResponse response = pair.Value.Handle(context, matchData);
+                return response;
             }
 
             throw new RestBadRequestException(new Uri(context.RequestUrl), null, null);

@@ -27,7 +27,7 @@ namespace BuildScripts
                         .Do(TargetCompile).DependsOn("load.solution");
                     runner.AddTarget ("unit.tests")
                         .SetDescription ("Runs unit tests on the project")
-                        .Do (r => { } /*r.RunTests("Detergent.Tests", false)*/).DependsOn ("load.solution");
+                        .Do (r => r.RunTests("Detergent.Tests", false)).DependsOn ("load.solution");
                     runner.AddTarget("web.tests")
                         .SetDescription("Runs Web tests on the project")
                         .Do(r => { } /*r.RunTests("Detergent.Tests.Web", false)*/).DependsOn("load.solution");
