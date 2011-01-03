@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Detergent", "Detergent\Detergent.csproj", "{2979E180-43AB-42F9-A170-C459DC3C8179}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{909B4089-5914-4468-9836-474319551CFD}"
+	ProjectSection(SolutionItems) = preProject
+		Build.bat = Build.bat
+		CustomDictionary.xml = CustomDictionary.xml
+		Detergent.FxCop = Detergent.FxCop
+		Detergent.ProjectVersion.txt = Detergent.ProjectVersion.txt
+		EditStyleCopRules.bat = EditStyleCopRules.bat
+		Settings.StyleCop = Settings.StyleCop
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildScripts", "BuildScripts\BuildScripts.csproj", "{A086C4A5-FA62-4F51-9CF0-2DD417084154}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2979E180-43AB-42F9-A170-C459DC3C8179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2979E180-43AB-42F9-A170-C459DC3C8179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2979E180-43AB-42F9-A170-C459DC3C8179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2979E180-43AB-42F9-A170-C459DC3C8179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A086C4A5-FA62-4F51-9CF0-2DD417084154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A086C4A5-FA62-4F51-9CF0-2DD417084154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A086C4A5-FA62-4F51-9CF0-2DD417084154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A086C4A5-FA62-4F51-9CF0-2DD417084154}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
