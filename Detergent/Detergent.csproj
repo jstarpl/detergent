@@ -74,6 +74,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ApplicationInfo.cs" />
     <Compile Include="CurrentHttpContext.cs" />
     <Compile Include="DetergentRootHttpHandler.cs" />
@@ -91,7 +94,6 @@
     <Compile Include="Mime\MultipartMessageParserException.cs" />
     <Compile Include="Mime\MultipartMessagePart.cs" />
     <Compile Include="Mime\MultipartStreamWriter.cs" />
-    <Compile Include="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="Templating\CacheableFileTemplate.cs" />
     <Compile Include="Templating\FileTemplate.cs" />
     <Compile Include="HttpListenerWrappedContext.cs" />
