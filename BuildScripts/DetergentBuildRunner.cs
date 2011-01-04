@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.IO;
 using Flubu.Builds;
 using Flubu.Builds.VSSolutionBrowsing;
@@ -10,7 +9,6 @@ namespace BuildScripts
         public DetergentBuildRunner(string productId) : base(productId)
         {
         }
-
 
         public DetergentBuildRunner CompileSolution2(string dotNetVersion)
         {

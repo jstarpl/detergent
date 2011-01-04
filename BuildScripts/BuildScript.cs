@@ -105,22 +105,24 @@ namespace BuildScripts
 
         private static void TargetPackage(ConcreteBuildRunner runner)
         {
-            //PackageMaster master = new PackageMaster(runner, @"Builds\Packages");
-            //master
-            //    .CleanPackagingTempDirectory()
-            //    .AddDir (GetConsoleOutputPath(runner))
-            //        .ToDir("Detergent-{0}", runner.BuildVersion)
-            //        .Exclude ("log4net.xml")
-            //        .Exclude ("NVelocity.xml")
-            //        .Exclude ("PowerCollections.xml")
-            //        .Commit ()
-            //    //.AddDir("Docs")
-            //    //    .ToDir("docs_source")
-            //    //    .Commit()
-            //    //.AddDir(PathBuilder.New(runner.BuildPackagesDir).Add("Docs"))
-            //    //    .ToDir("docs")
-            //    //    .Commit()
-            //    .Zip ("Detergent-{0}.zip", runner.BuildVersion);
+            PackageMaster master = new PackageMaster(runner, @"Builds\Packages");
+            master
+                .CleanPackagingTempDirectory()
+                .AddDir(PathBuilder.New("Detergent").Add(runner.GetProjectOutputPath("Detergent")))
+                    .ToDir("Detergent-{0}", runner.BuildVersion)
+                    .Exclude("log4net.xml")
+                    .Exclude("NVelocity.xml")
+                    .Exclude("PowerCollections.xml")
+                    .Exclude("Microsoft.Http.Extensions.pdb")
+                    .Exclude("Microsoft.Http.pdb")
+                    .Commit()
+                //.AddDir("Docs")
+                //    .ToDir("docs_source")
+                //    .Commit()
+                //.AddDir(PathBuilder.New(runner.BuildPackagesDir).Add("Docs"))
+                //    .ToDir("docs")
+                //    .Commit()
+                .Zip("Detergent-{0}.zip", runner.BuildVersion);
         }
 
         private static void TargetUpdateLib (
