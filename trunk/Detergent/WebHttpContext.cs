@@ -171,23 +171,31 @@ namespace Detergent
         public void SetResponse(byte[] data, string contentType)
         {
             httpContext.Response.ContentType = contentType;
-            httpContext.Response.BinaryWrite(data);
+            
+            if (data.Length > 0)
+            {
+                httpContext.Response.BinaryWrite(data);
+            }
+            
             httpContext.Response.End();
         }
 
         public void SetResponse(byte[] data, string contentType, Encoding encoding)
         {
             httpContext.Response.ContentEncoding = encoding;
-            httpContext.Response.ContentType = contentType;
-            httpContext.Response.BinaryWrite(data);
-            httpContext.Response.End();
+            SetResponse(data, contentType);
         }
 
         public void SetResponse(string response, string contentType, Encoding encoding)
         {
             httpContext.Response.ContentEncoding = encoding;
             httpContext.Response.ContentType = contentType;
-            httpContext.Response.BinaryWrite(encoding.GetBytes(response));
+            
+            if (false == string.IsNullOrEmpty(response))
+            {
+                httpContext.Response.BinaryWrite(encoding.GetBytes(response));
+            }
+
             httpContext.Response.End();
         }
 
