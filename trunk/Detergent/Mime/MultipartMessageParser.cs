@@ -14,7 +14,7 @@ namespace Detergent.Mime
                 log.DebugFormat("Message content-type: '{0}'", contentType);
 
             HeaderField contentTypeField = ParseHeaderField(
-                "Content-Type",
+                HttpConstants.ContentType,
                 contentType);
 
             MultipartMessage message = new MultipartMessage(contentTypeField);

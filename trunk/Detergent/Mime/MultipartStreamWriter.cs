@@ -79,7 +79,7 @@ namespace Detergent.Mime
         private void WriteContentTypeHeader(string contentType)
         {
             StringBuilder header = new StringBuilder();
-            header.AppendFormat("\r\nContent-type: {0}\r\n\r\n", contentType);
+            header.AppendFormat("\r\n{0}: {1}\r\n\r\n", HttpConstants.ContentTypeLower, contentType);
             WriteBytes(baseEncoding.GetBytes(header.ToString()));
         }
 
