@@ -92,7 +92,7 @@ namespace Detergent.WebPages
 
         protected virtual void RenderMetaTags()
         {
-            writer.AddAttribute("HTTP-EQUIV", "Content-Type");
+            writer.AddAttribute("HTTP-EQUIV", HttpConstants.ContentType);
             writer.AddAttribute("CONTENT", "text/html; charset=utf-8");
             writer.RenderBeginTag(HtmlTextWriterTag.Meta);
             writer.RenderEndTag();
