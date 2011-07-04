@@ -97,6 +97,7 @@
     <Compile Include="Mime\MultipartMessageParser.cs" />
     <Compile Include="Mime\MultipartMessageParserException.cs" />
     <Compile Include="Mime\MultipartMessagePart.cs" />
+    <Compile Include="Mime\MultipartMessageReader.cs" />
     <Compile Include="Mime\MultipartStreamWriter.cs" />
     <Compile Include="Templating\CacheableFileTemplate.cs" />
     <Compile Include="Templating\FileTemplate.cs" />
