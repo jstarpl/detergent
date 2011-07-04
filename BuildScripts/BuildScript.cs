@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using Flubu;
 using Flubu.Builds;
 
@@ -123,6 +124,9 @@ namespace BuildScripts
                 //    .ToDir("docs")
                 //    .Commit()
                 .Zip("Detergent-{0}.zip", runner.BuildVersion);
+
+            // wait for a while for the ZIP to be really created (problem on the build server)
+            Thread.Sleep(2000);
         }
 
         private static void TargetUpdateLib (
