@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -23,7 +22,7 @@ namespace Detergent.Mime
 
         public HeaderField GetHeader (string headerName)
         {
-            HeaderField header = headers.Find(x => 0 == string.Compare(headerName, x.FieldName, StringComparison.OrdinalIgnoreCase));            
+            HeaderField header = headers.Find(x => x.IsName(headerName));
             if (header == null)
             {
                 string message = string.Format(
@@ -38,12 +37,12 @@ namespace Detergent.Mime
 
         public bool HasHeader(string headerName)
         {
-            return null != headers.Find(x => 0 == string.Compare(headerName, x.FieldName, StringComparison.OrdinalIgnoreCase));
+            return null != headers.Find(x => x.IsName(headerName));
         }
 
         public void RemoveHeader (string headerName)
         {
-            headers.RemoveAll(x => 0 == string.Compare(headerName, x.FieldName, StringComparison.OrdinalIgnoreCase));
+            headers.RemoveAll(x => x.IsName(headerName));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]

@@ -3,7 +3,6 @@ namespace Detergent
     public static class HttpConstants
     {
         public const string ContentType = "Content-Type";
-        public const string ContentTypeLower = "Content-type";
         public const string ContentTypeCss = "text/css";
         public const string ContentTypeHtml = "text/html; charset=\"utf-8\"";
         public const string ContentTypeImagePng = "image/png";
