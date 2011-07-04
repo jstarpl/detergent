@@ -125,102 +125,17 @@
     <Modules>
      <Module Name="detergent.dll">
       <Namespaces>
-       <Namespace Name="Detergent">
+       <Namespace Name="Detergent.Mime">
         <Types>
-         <Type Name="DetergentRootHttpHandler">
+         <Type Name="MultipartMessageReader">
           <Members>
-           <Member Name="#AddSubhandler(System.String,Detergent.IDetergentHttpHandler)">
+           <Member Name="#Dispose(System.Boolean)">
             <Messages>
-             <Message Id="Subhandler" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2011-01-03 07:48:43Z">
-              <Issue Name="Member">
-               <Item>Subhandler</Item>
-               <Item>'DetergentRootHttpHandler.AddSubhandler(string, IDetergentHttpHandler)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="DummyHttpContext">
-          <Members>
-           <Member Name="#ResponseContentEncoding">
-            <Accessors>
-             <Accessor Name="#get_ResponseContentEncoding()">
-              <Messages>
-               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2011-01-03 07:48:43Z" FixCategory="Breaking">
-                <Issue Name="PropertyGetter" Level="Warning">
-                 <Item>'DummyHttpContext.ResponseContentEncoding.get()'</Item>
-                 <Item>'NotImplementedException'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#ResponseContentType">
-            <Accessors>
-             <Accessor Name="#get_ResponseContentType()">
-              <Messages>
-               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2011-01-03 07:48:43Z" FixCategory="Breaking">
-                <Issue Name="PropertyGetter" Level="Warning">
-                 <Item>'DummyHttpContext.ResponseContentType.get()'</Item>
-                 <Item>'NotImplementedException'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#ResponseStream">
-            <Accessors>
-             <Accessor Name="#get_ResponseStream()">
-              <Messages>
-               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2011-01-03 07:48:43Z" FixCategory="Breaking">
-                <Issue Name="PropertyGetter" Level="Warning">
-                 <Item>'DummyHttpContext.ResponseStream.get()'</Item>
-                 <Item>'NotImplementedException'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="HttpConstants">
-          <Members>
-           <Member Name="#ContentTypeImagePng">
-            <Messages>
-             <Message Id="Png" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2011-01-03 07:48:43Z">
-              <Issue Name="Member">
-               <Item>Png</Item>
-               <Item>'HttpConstants.ContentTypeImagePng'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="HttpListenerWrappedContext">
-          <Members>
-           <Member Name="#SetExpiresHeader(System.DateTime)">
-            <Messages>
-             <Message Id="System.DateTime.ToString(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-01-03 07:48:43Z">
+             <Message Id="buffer" TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213" Created="2011-07-04 07:48:31Z">
               <Issue>
-               <Item>'DateTime.ToString(string)'</Item>
-               <Item>'HttpListenerWrappedContext.SetExpiresHeader(DateTime)'</Item>
-               <Item>'DateTime.ToString(string, IFormatProvider)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#SetLastModifiedHeader(System.DateTime)">
-            <Messages>
-             <Message Id="System.DateTime.ToString(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-01-03 07:48:43Z">
-              <Issue>
-               <Item>'DateTime.ToString(string)'</Item>
-               <Item>'HttpListenerWrappedContext.SetLastModifiedHeader(DateTime)'</Item>
-               <Item>'DateTime.ToString(string, IFormatProvider)'</Item>
+               <Item>'MultipartMessageReader'</Item>
+               <Item>'MultipartMessageReader.buffer'</Item>
+               <Item>'BinaryBufferWithPatternWatching'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -251,14 +166,8 @@
    <Rule TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040">
     <Resolution Name="Default">Define a custom attribute to replace {0}.</Resolution>
    </Rule>
-   <Rule TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065">
-    <Resolution Name="PropertyGetter">{0} creates an exception of type {1}, an exception type that should not be raised in a property. If this exception instance might be raised, use a different exception type, convert this property into a method, or change this property's logic so that it no longer raises an exception.</Resolution>
-   </Rule>
-   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
-    <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
-   </Rule>
-   <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
-    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   <Rule TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213">
+    <Resolution Name="Default">{0} contains field {1} that is of IDisposable type: {2}. Change the Dispose method on {0} to call Dispose or Close on this field.</Resolution>
    </Rule>
   </Rules>
  </FxCopReport>
