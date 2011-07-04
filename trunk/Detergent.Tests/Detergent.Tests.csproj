@@ -76,6 +76,7 @@
     <Compile Include="BinaryBufferWithPatternWatchingTests.cs" />
     <Compile Include="EmbeddedRestServerTests.cs" />
     <Compile Include="EmbeddedWebServerTests.cs" />
+    <Compile Include="HeaderFieldTests.cs" />
     <Compile Include="MultipartMessageParserTests.cs" />
     <Compile Include="MultipartMessageReaderTests.cs" />
     <Compile Include="MultipartStreamWriterTests.cs" />

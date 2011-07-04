@@ -25,7 +25,7 @@ namespace Detergent.Tests
 
                 byte[] bytes = stream.ToArray();
                 string result = Encoding.UTF8.GetString(bytes);
-                Assert.AreEqual("\r\n-------Test\r\nContent-type: text/plain\r\n\r\nmy text\r\n-------Test\r\nContent-type: application/xml\r\n\r\n<tag/>\r\n-------Test--", result);
+                Assert.AreEqual("\r\n-------Test\r\nContent-Type: text/plain\r\n\r\nmy text\r\n-------Test\r\nContent-Type: application/xml\r\n\r\n<tag/>\r\n-------Test--", result);
             }
         }
     }

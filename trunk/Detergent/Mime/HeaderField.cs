@@ -35,6 +35,18 @@ namespace Detergent.Mime
             parameters.Add(parameterName, parameterValue);
         }
 
+        /// <summary>
+        /// Performs case-insensitive comparison of the header field name.
+        /// </summary>
+        /// <remarks>This method is provided because HTTP header names are case insensitive and simply using <see cref="FieldName"/>
+        /// to compare two strings is not compatible with HTTP specifications.</remarks>
+        /// <param name="fieldName">Expected field name.</param>
+        /// <returns><c>true</c> if the header field name is equal to the expected name; <c>false</c> otherwise.</returns>
+        public bool IsName (string fieldName)
+        {
+            return String.Compare(this.fieldName, fieldName, StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+
         public static HeaderField Parse (string value)
         {
             Match match = headerRegex.Match(value);
