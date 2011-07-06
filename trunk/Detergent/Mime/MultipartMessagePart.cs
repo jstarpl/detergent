@@ -6,10 +6,6 @@ namespace Detergent.Mime
 {
     public class MultipartMessagePart
     {
-        public MultipartMessagePart()
-        {
-        }
-
         public IList<HeaderField> Headers
         {
             get { return headers; }
