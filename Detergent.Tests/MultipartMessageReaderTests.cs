@@ -91,6 +91,8 @@ namespace Detergent.Tests
                     headers.Add(new HeaderField("Content-type", "application/pdf"));
                     headers.Add(new HeaderField("Content-id", "PDF"));
                     writer.WritePart(headers, pdfData);
+
+                    writer.WriteCloseDelimiter();
                 }
 
                 requestData = stream.ToArray();

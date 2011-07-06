@@ -120,7 +120,7 @@ namespace Detergent.Mime
                     buffer.Pattern.Length);
 
                 if (log.IsDebugEnabled)
-                    log.DebugFormat("Found part '{0}'", message.BaseEncoding.GetString(part.Data));
+                    log.DebugFormat("Found new part (content length: '{0}')", part.Data.Length);
 
                 return part;
             }

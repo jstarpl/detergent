@@ -18,6 +18,7 @@ namespace Detergent.Mime
         {
             foreach (MultipartMessagePart part in message.Parts)
                 WritePart(part.Headers, part.Data);
+            WriteCloseDelimiter();
         }
 
         public void WritePart (string contentType, string content, Encoding encoding)
@@ -41,6 +42,12 @@ namespace Detergent.Mime
             WriteBytes(content);
         }
 
+        public void WriteCloseDelimiter()
+        {
+            WriteDelimiter();
+            WriteBytes(baseEncoding.GetBytes("--"));
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -56,7 +63,6 @@ namespace Detergent.Mime
                 if (disposing)
                 {
                     // clean managed resources       
-                    WriteCloseDelimiter();
                     binaryWriter.Close();
                 }
 
@@ -87,12 +93,6 @@ namespace Detergent.Mime
         {
             string footer = "\r\n--" + boundary;
             WriteBytes(baseEncoding.GetBytes(footer));
-        }
-
-        private void WriteCloseDelimiter()
-        {
-            WriteDelimiter();
-            WriteBytes(baseEncoding.GetBytes("--"));
         }
 
         private void WriteCRLF()
