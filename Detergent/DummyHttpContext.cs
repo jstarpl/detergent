@@ -9,6 +9,12 @@ using System.Web;
 
 namespace Detergent
 {
+    /// <summary>
+    /// A dummy implementation of <see cref="IHttpContext"/> that can be used for unit testing.
+    /// </summary>
+    /// <remarks>
+    /// You can use methods like <see cref="SetRequestContent(string,byte[])"/> to initialize the HTTP request data before
+    /// providing the object to the code under test.</remarks>
     public class DummyHttpContext : IHttpContext
     {
         public DummyHttpContext()
@@ -35,7 +41,7 @@ namespace Detergent
             if (false == String.IsNullOrEmpty(queryString))
                 uri.Query = queryString;
 
-            this.RequestUrl = uri.ToString();
+            RequestUrl = uri.ToString();
         }
 
         public string ApplicationDirectoryPath
@@ -64,7 +70,17 @@ namespace Detergent
             set { requestContentEncoding = value; }
         }
 
-        public long RequestContentLength { get; set; }
+        public long RequestContentLength 
+        { 
+            get
+            {
+                if (requestContent != null)
+                    return requestContent.Length;
+
+                return 0;
+            }
+        }
+
         public string RequestContentType { get; set; }
         public string RequestHttpMethod { get; set; }
 
@@ -77,7 +93,7 @@ namespace Detergent
         {
             get
             {
-                return new MemoryStream(requestContentEncoding.GetBytes(requestContent), false);
+                return new MemoryStream(requestContent, false);
             }
         }
 
@@ -177,15 +193,33 @@ namespace Detergent
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sets up the HTTP request stream to return the specified string content.
+        /// </summary>
+        /// <param name="requestContentType">HTTP request Content-Type.</param>
+        /// <param name="requestContentEncoding">The encoding used for the string content.</param>
+        /// <param name="requestContent">Content of the request in the string form.</param>
         public void SetRequestContent (
             string requestContentType, 
             Encoding requestContentEncoding,
             string requestContent)
         {
-            this.requestContent = requestContent;
             this.requestContentEncoding = requestContentEncoding;
+            this.requestContent = requestContentEncoding.GetBytes(requestContent);
             RequestContentType = requestContentType;
-            RequestContentLength = requestContentEncoding.GetByteCount(requestContent);
+        }
+
+        /// <summary>
+        /// Sets up the HTTP request stream to return the specified byte array content.
+        /// </summary>
+        /// <param name="requestContentType">HTTP request Content-Type.</param>
+        /// <param name="requestContent">Content of the request in the byte array form.</param>
+        public void SetRequestContent(
+            string requestContentType,
+            byte[] requestContent)
+        {
+            this.requestContent = requestContent;
+            RequestContentType = requestContentType;
         }
 
         public void SetResponse(byte[] data, string contentType, Encoding encoding)
@@ -199,7 +233,7 @@ namespace Detergent
         }
 
         private Dictionary<string, object> appCache = new Dictionary<string, object>();
-        private string requestContent;
+        private byte[] requestContent;
         private Encoding requestContentEncoding = Encoding.UTF8;
     }
 }

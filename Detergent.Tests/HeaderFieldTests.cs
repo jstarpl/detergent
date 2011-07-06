@@ -28,6 +28,16 @@ namespace Detergent.Tests
         }
 
         [Test]
+        public void ParseHeaderWithParameters2()
+        {
+            HeaderField field = HeaderField.Parse("Content-Disposition: attachment; filename=test.pdf");
+            Assert.AreEqual("Content-Disposition", field.FieldName);
+            Assert.AreEqual("attachment", field.FieldValue);
+            Assert.AreEqual(1, field.Parameters.Count);
+            Assert.AreEqual("test.pdf", field.Parameters["filename"]);
+        }
+
+        [Test]
         public void HeaderNamesAreCaseInsensitive()
         {
             HeaderField field = new HeaderField(HttpConstants.ContentType, "value");
