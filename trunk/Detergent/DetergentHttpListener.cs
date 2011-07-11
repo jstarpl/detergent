@@ -112,7 +112,14 @@ namespace Detergent
             try
             {
                 if (response != null)
+                {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Sending response type {0}", response.GetType().FullName);
+
                     response.Send(wrappedContext);
+                }
+                else if (log.IsDebugEnabled)
+                    log.Debug("Request has been processed without any response");
             }
             catch (Exception ex)
             {
