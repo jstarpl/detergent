@@ -51,15 +51,18 @@ namespace Detergent.Tests
 
             using (MemoryStream stream = new MemoryStream())
             {
+                long writtenBytes;
                 using (MultipartStreamWriter writer = new MultipartStreamWriter(
                     stream,
                     boundary,
                     Encoding.UTF8))
                 {
                     writer.WriteWholeMessage(message);
+                    writtenBytes = writer.BytesWritten;
                 }
 
                 byte[] bytes = stream.ToArray();
+                Assert.AreEqual(bytes.Length, writtenBytes);
                 string result = Encoding.UTF8.GetString(bytes);
                 Assert.AreEqual("\r\n-------Test\r\nContent-Type: text/plain\r\n\r\nmy text\r\n-------Test\r\nContent-Type: application/xml\r\n\r\n<tag/>\r\n-------Test--", result);
             }

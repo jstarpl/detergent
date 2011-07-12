@@ -7,6 +7,11 @@ namespace Detergent.Mime
 {
     public class MultipartStreamWriter : IDisposable
     {
+        public long BytesWritten
+        {
+            get { return binaryWriter.BaseStream.Length; }
+        }
+
         public MultipartStreamWriter(Stream stream, string boundary, Encoding baseEncoding)
         {
             this.boundary = boundary;
