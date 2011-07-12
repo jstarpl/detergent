@@ -9,7 +9,7 @@ namespace Detergent.Mime
     {
         public long BytesWritten
         {
-            get { return binaryWriter.BaseStream.Length; }
+            get { return bytesWritten; }
         }
 
         public MultipartStreamWriter(Stream stream, string boundary, Encoding baseEncoding)
@@ -108,11 +108,13 @@ namespace Detergent.Mime
         private void WriteBytes(byte[] bytes)
         {
             binaryWriter.Write(bytes);
+            bytesWritten += bytes.Length;
         }
 
         private bool disposed;
         private readonly string boundary;
         private readonly Encoding baseEncoding;
         private BinaryWriter binaryWriter;
+        private long bytesWritten;
     }
 }
