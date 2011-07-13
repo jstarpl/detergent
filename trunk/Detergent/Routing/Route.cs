@@ -39,7 +39,7 @@ namespace Detergent.Routing
             for (int i = 0; i < match.Groups.Count; i++)
             {
                 string groupName = urlScheme.GroupNameFromNumber(i);
-                data.Parameters[groupName] = match.Groups[i].Value;
+                data.AddParameter(groupName, match.Groups[i].Value);
             }
 
             return data;

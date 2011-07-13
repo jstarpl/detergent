@@ -19,8 +19,8 @@ namespace Detergent.Tests
             RouteMatchData matchData = route.Match(context);
 
             Assert.IsNotNull(matchData);
-            Assert.AreEqual("10", matchData.Parameters["productId"]);
-            Assert.AreEqual("20", matchData.Parameters["partId"]);
+            Assert.AreEqual("10", matchData.GetParameter("productId"));
+            Assert.AreEqual("20", matchData.GetParameter("partId"));
         }
 
         [Test]

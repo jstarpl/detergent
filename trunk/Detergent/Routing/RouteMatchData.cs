@@ -1,17 +1,23 @@
+using System;
 using System.Collections.Generic;
 
 namespace Detergent.Routing
 {
     public class RouteMatchData
     {
-        public IDictionary<string, string> Parameters
+        public void AddParameter(string name, string value)
         {
-            get { return parameters; }
+            parameters.Add(name, value);
         }
 
         public string GetParameter(string name)
         {
             return parameters[name];
+        }
+
+        public bool HasParameter(string name)
+        {
+            return parameters.ContainsKey(name);
         }
 
         private Dictionary<string, string> parameters = new Dictionary<string, string>();
