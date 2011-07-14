@@ -125,25 +125,6 @@
     <Modules>
      <Module Name="detergent.dll">
       <Namespaces>
-       <Namespace Name="Detergent.Mime">
-        <Types>
-         <Type Name="MultipartMessageReader">
-          <Members>
-           <Member Name="#Dispose(System.Boolean)">
-            <Messages>
-             <Message Id="buffer" TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213" Created="2011-07-04 07:48:31Z">
-              <Issue>
-               <Item>'MultipartMessageReader'</Item>
-               <Item>'MultipartMessageReader.buffer'</Item>
-               <Item>'BinaryBufferWithPatternWatching'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
        <Namespace Name="Detergent.Rest">
         <Types>
          <Type Name="IRestRequestRouter">
@@ -157,6 +138,23 @@
          </Type>
         </Types>
        </Namespace>
+       <Namespace Name="Detergent.Testing">
+        <Types>
+         <Type Name="DummyHttpContext">
+          <Members>
+           <Member Name="#ResponseContentAsByteArray">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2011-07-14 06:49:03Z">
+              <Issue>
+               <Item>'DummyHttpContext.ResponseContentAsByteArray'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
       </Namespaces>
      </Module>
     </Modules>
@@ -166,8 +164,8 @@
    <Rule TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040">
     <Resolution Name="Default">Define a custom attribute to replace {0}.</Resolution>
    </Rule>
-   <Rule TypeName="DisposableFieldsShouldBeDisposed" Category="Microsoft.Usage" CheckId="CA2213">
-    <Resolution Name="Default">{0} contains field {1} that is of IDisposable type: {2}. Change the Dispose method on {0} to call Dispose or Close on this field.</Resolution>
+   <Rule TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819">
+    <Resolution Name="Default">Change {0} to return a collection or make it a method.</Resolution>
    </Rule>
   </Rules>
  </FxCopReport>
