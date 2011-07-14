@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 
-namespace Detergent
+namespace Detergent.Testing
 {
     /// <summary>
     /// A dummy implementation of <see cref="IHttpContext"/> that can be used for unit testing.

@@ -1,5 +1,6 @@
 using System.Net;
 using Detergent.Rest;
+using Detergent.Testing;
 using MbUnit.Framework;
 using Microsoft.Http;
 

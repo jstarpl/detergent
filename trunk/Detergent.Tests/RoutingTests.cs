@@ -1,4 +1,5 @@
 using Detergent.Routing;
+using Detergent.Testing;
 using MbUnit.Framework;
 
 namespace Detergent.Tests

@@ -25,10 +25,14 @@ namespace Detergent.Rest
                 new ServiceRouteHandler<TService>(servicesRegistry, serviceMethod));
         }
 
+        public IEnumerable<KeyValuePair<Route, IRouteHandler>> EnumerateRoutes()
+        {
+            return routes;
+        }
+
         public IHttpResponse RouteRestRequest(IHttpContext context)
         {
-            foreach (KeyValuePair<Route, IRouteHandler> pair
-                in routes)
+            foreach (KeyValuePair<Route, IRouteHandler> pair in routes)
             {
                 RouteMatchData matchData = pair.Key.Match(context);
                 if (matchData == null)

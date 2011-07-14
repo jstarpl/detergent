@@ -147,7 +147,7 @@
     <Compile Include="IDetergentHttpHandler.cs" />
     <Compile Include="IHttpContext.cs" />
     <Compile Include="IHttpResponse.cs" />
-    <Compile Include="DummyHttpContext.cs" />
+    <Compile Include="Testing\DummyHttpContext.cs" />
     <Compile Include="Soap\ErrorSoapEnvelope.cs" />
     <Compile Include="HttpConstants.cs" />
     <Compile Include="Soap\ISoapEnvelope.cs" />
