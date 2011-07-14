@@ -101,18 +101,27 @@ namespace Detergent.Testing
         public string RequestRawUrl { get; set; }
         public string RequestUrl { get; set; }
 
-        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
-        public Encoding ResponseContentEncoding
+        [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ResponseContentAsByteArray
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return responseContent; }
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
+        public string ResponseContentAsString
+        {
+            get { return responseContentEncoding.GetString(responseContent); }
+        }
+
+        public Encoding ResponseContentEncoding
+        {
+            get { return responseContentEncoding; }
+            set { responseContentEncoding = value; }
+        }
+
         public string ResponseContentType
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return responseContentType; }
+            set { responseContentType = value; }
         }
 
         [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
@@ -183,16 +192,6 @@ namespace Detergent.Testing
             throw new NotImplementedException();
         }
 
-        public void SetRequestId(string requestId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetResponse(byte[] data, string contentType)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Sets up the HTTP request stream to return the specified string content.
         /// </summary>
@@ -222,18 +221,36 @@ namespace Detergent.Testing
             RequestContentType = requestContentType;
         }
 
-        public void SetResponse(byte[] data, string contentType, Encoding encoding)
+        public void SetRequestId(string requestId)
         {
             throw new NotImplementedException();
         }
 
+        public void SetResponse(byte[] data, string contentType)
+        {
+            responseContent = data;
+            responseContentType = contentType;
+        }
+
+        public void SetResponse(byte[] data, string contentType, Encoding encoding)
+        {
+            responseContent = data;
+            responseContentType = contentType;
+            responseContentEncoding = encoding;
+        }
+
         public void SetResponse(string response, string contentType, Encoding encoding)
         {
-            throw new NotImplementedException();
+            responseContent = encoding.GetBytes(response);
+            responseContentType = contentType;
+            responseContentEncoding = encoding;
         }
 
         private Dictionary<string, object> appCache = new Dictionary<string, object>();
         private byte[] requestContent;
         private Encoding requestContentEncoding = Encoding.UTF8;
+        private byte[] responseContent;
+        private Encoding responseContentEncoding;
+        private string responseContentType;
     }
 }
