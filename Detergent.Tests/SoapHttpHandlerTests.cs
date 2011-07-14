@@ -1,5 +1,6 @@
 using System.Text;
 using Detergent.Soap;
+using Detergent.Testing;
 using MbUnit.Framework;
 
 namespace Detergent.Tests
