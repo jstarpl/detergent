@@ -164,7 +164,6 @@
     <None Include="Soap\SoapEnvelope.cs" />
     <Compile Include="Soap\SoapFault.cs" />
     <Compile Include="Soap\SoapFaultCode.cs" />
-    <None Include="Soap\SoapHttpHandler.cs" />
     <Compile Include="Templating\NVelocityHtmlRenderHelper.cs" />
     <Compile Include="Templating\StringTemplate.cs" />
     <Compile Include="Templating\TemplateHttpResponse.cs" />
