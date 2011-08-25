@@ -79,6 +79,9 @@ namespace Detergent.Soap
                 if (String.IsNullOrEmpty(content))
                     throw new SoapClientException("Missing SOAP request envelope");
 
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("SOAP request contents: '{0}'", content);
+
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.LoadXml(content);
 
