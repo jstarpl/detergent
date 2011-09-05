@@ -99,7 +99,7 @@ namespace BuildScripts
             DetergentBuildRunner extendedRunner = (DetergentBuildRunner)runner;
 
             extendedRunner
-                .LoadSolution("Detergent.2008.sln");
+                .LoadSolution("Detergent.2010.sln");
             extendedRunner
                 .HudsonFetchBuildVersion ();
         }

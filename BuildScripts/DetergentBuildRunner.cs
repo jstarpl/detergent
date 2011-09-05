@@ -16,7 +16,7 @@ namespace BuildScripts
             string msbuildPath = ScriptExecutionEnvironment.GetDotNetFWDir(dotNetVersion);
 
             ProgramRunner
-                .AddArgument(MakePathFromRootDir(ProductId) + ".2008.sln")
+                .AddArgument(MakePathFromRootDir(ProductId) + ".2010.sln")
                 .AddArgument("/p:Configuration={0}", BuildConfiguration)
                 .AddArgument("/consoleloggerparameters:NoSummary")
                 .Run(Path.Combine(msbuildPath, @"msbuild.exe"));
