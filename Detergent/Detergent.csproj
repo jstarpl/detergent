@@ -177,6 +177,7 @@
     <None Include="..\Detergent.snk">
       <Link>Detergent.snk</Link>
     </None>
+    <None Include="Detergent.nuspec" />
     <None Include="packages.config" />
     <None Include="Soap\SoapEnvelope.cs" />
     <Compile Include="Soap\SoapFault.cs" />

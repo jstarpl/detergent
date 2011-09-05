@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Detergent</id>
+    <title>No more tyranny of SOAP.</title>
+    <version>$version</version>
+    <authors>Igor Brejc</authors>
+    <owners>Igor Brejc</owners>
+    <projectUrl>http://code.google.com/p/detergent/</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>http://www.opensource.org/licenses/bsd-license.php</licenseUrl>
+    <description>Detergent is a C# library providing a simple interface-based abstraction layer for implementing SOAP and REST Web services and it also contains a simplified MVC framework.
+
+      The abstraction allows running Web applications either through HTTP handlers (through IIS) or HTTP listeners (as a standalone Web server) using the same application code.
+    </description>
+    <tags>REST SOAP HTTP webservices</tags>
+    <dependencies>
+      <dependency id="log4net" version="1.2.10" />
+      <dependency id="NVelocity" version="1.0.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Detergent\Detergent.*" target="lib" />
+  </files>
+</package>

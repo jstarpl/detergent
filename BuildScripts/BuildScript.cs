@@ -1,14 +1,16 @@
 ﻿using System;
-using System.IO;
-using System.Threading;
+using System.Globalization;
+using System.Text;
 using Flubu;
 using Flubu.Builds;
+using Flubu.Builds.VSSolutionBrowsing;
+using Flubu.Packaging;
+using Flubu.Targeting;
+using Flubu.Tasks.Processes;
+using Flubu.Tasks.Text;
 
 //css_ref bin\Debug\Flubu.dll;
-//css_ref ..\lib\ICSharpCode.SharpZipLib.2.0\ICSharpCode.SharpZipLib.dll;
-//css_ref ProjectPilot.BuildScripts.dll;
-//css_import DetergentBuildRunner.cs;
-//css_import PackageMaster.cs;
+//css_ref bin\Debug\Flubu.Contrib.dll;
 
 namespace BuildScripts
 {
@@ -16,47 +18,76 @@ namespace BuildScripts
     {
         public static int Main(string[] args)
         {
-            using (DetergentBuildRunner runner = new DetergentBuildRunner ("Detergent"))
+            TargetTree targetTree = new TargetTree();
+            BuildTargets.FillBuildTargets(targetTree);
+
+            int testsRunCounter = 0;
+
+            targetTree.AddTarget("rebuild")
+                .SetAsDefault()
+                .SetDescription("Rebuilds the whole project")
+                .DependsOn("compile", "fxcop", "tests", "package");
+
+            targetTree.GetTarget("fetch.build.version")
+                .Do(TargetFetchBuildVersion);
+
+            targetTree.AddTarget("tests")
+                .SetDescription("Runs unit tests")
+                .Do(r => 
+                    {
+                        BuildTargets.TargetRunTests(r, "Detergent.Tests", null, ref testsRunCounter);
+                    }).DependsOn("load.solution");
+
+            targetTree.AddTarget("package")
+                .SetDescription("Packages the build")
+                .Do(TargetPackage).DependsOn("load.solution", "fetch.build.version");
+
+            targetTree.AddTarget("nuget")
+                .SetDescription("Produces NuGet packages for reusable components and publishes them to our internal NuGet server")
+                .Do(c =>
+                    {
+                        TargetNuGet(c, "Detergent");
+                    }).DependsOn("fetch.build.version");
+
+            using (TaskSession session = new TaskSession(new SimpleTaskContextProperties(), args, targetTree))
             {
+                BuildTargets.FillDefaultProperties(session);
+                session.Start(BuildTargets.OnBuildFinished);
+
+                session.AddLogger(new MulticoloredConsoleLogger(Console.Out));
+
+                //session.Properties.Set(BuildProps.TargetDotNetVersion, "v4.0.30319");
+                //session.Properties.Set(BuildProps.TargetDotNetVersionForGallio, "v4.0.30319");
+                session.Properties.Set(BuildProps.CompanyName, CompanyName);
+                session.Properties.Set(BuildProps.CompanyCopyright, CompanyCopyright);
+                session.Properties.Set(BuildProps.ProductId, "Detergent");
+                session.Properties.Set(BuildProps.ProductName, "Detergent");
+                session.Properties.Set(BuildProps.SolutionFileName, "Detergent.2010.sln");
+                session.Properties.Set(BuildProps.VersionControlSystem, VersionControlSystem.Subversion);
+
                 try
                 {
-                    runner
-                        .SetLibrariesDirectory(@"lib")
-                        .AddTarget("load.solution").SetAsHidden().Do(TargetLoadSolution);
-                    runner.AddTarget("compile")
-                        .SetDescription("Compiles the VS solution and runs FxCop analysis on it")
-                        .Do(TargetCompile).DependsOn("load.solution");
-                    runner.AddTarget ("unit.tests")
-                        .SetDescription ("Runs unit tests on the project")
-                        .Do (r => r.RunTests("Detergent.Tests", false)).DependsOn ("load.solution");
-                    runner.AddTarget("web.tests")
-                        .SetDescription("Runs Web tests on the project")
-                        .Do(r => { } /*r.RunTests("Detergent.Tests.Web", false)*/).DependsOn("load.solution");
-                    runner.AddTarget ("package")
-                        .SetDescription("Packages all the build products into ZIP files")
-                        .Do(TargetPackage).DependsOn("load.solution");
-                    runner.AddTarget("rebuild")
-                        .SetDescription("Rebuilds the project, runs tests and packages the build products.")
-                        .SetAsDefault().DependsOn("compile", "unit.tests", "web.tests", "package");
-                    runner.AddTarget ("update.lib.flubu")
-                        .SetDescription ("Updates the lib directory with the latest versions of Flubu libraries")
-                        .Do (r => TargetUpdateLib (r, @"D:\MyStuff\BuildArea\Builds\ProjectPilot\packages\Flubu\Flubu-latest.zip", @"lib\Flubu"));
-                    //runner.AddTarget("docs")
-                    //    .SetDescription("Generates Quiki documentation using Quiki :)")
-                    //    .Do(r => TargetDocs(r, false)).DependsOn("load.solution");
-
                     // actual run
                     if (args.Length == 0)
-                        runner.RunTarget(runner.DefaultTarget.TargetName);
+                        targetTree.RunTarget(session, targetTree.DefaultTarget.TargetName);
                     else
-                        runner.RunTarget(args[0]);
+                    {
+                        string targetName = args[0];
+                        if (false == targetTree.HasTarget(targetName))
+                        {
+                            session.WriteError("ERROR: The target '{0}' does not exist", targetName);
+                            targetTree.RunTarget(session, "help");
+                            return 2;
+                        }
 
-                    runner
-                        .Complete();
+                        targetTree.RunTarget(session, args[0]);
+                    }
+
+                    session.Complete();
 
                     return 0;
                 }
-                catch (RunnerFailedException)
+                catch (TaskExecutionException)
                 {
                     return 1;
                 }
@@ -65,103 +96,111 @@ namespace BuildScripts
                     Console.WriteLine(ex);
                     return 1;
                 }
-                finally
-                {
-                    runner.MergeCoverageReports();
-                    runner.CopyBuildLogsToCCNet();
-                }
             }
         }
 
-        private static void TargetCompile(ConcreteBuildRunner runner)
+        private static void TargetFetchBuildVersion(ITaskContext context)
         {
-            runner
-                .PrepareBuildDirectory()
-                .SetCompanyInfo(
-                "Igor Brejc",
-                String.Empty,
-                String.Empty)
-                .CleanOutput();
-
-            string commonAssemblyInfoFileName = Path.Combine(runner.ProductRootDir, "CommonAssemblyInfo.cs");
-
-            runner.ScriptExecutionEnvironment.LogMessage("CommonAssemblyInfo.cs path: '{0}'", commonAssemblyInfoFileName);
-            runner
-                .GenerateCommonAssemblyInfo();
-            ((DetergentBuildRunner)runner).CompileSolution2(
-                runner.ScriptExecutionEnvironment.Net35VersionNumber);
-
-            runner.FxCop();
+            Version version = BuildTargets.FetchBuildVersionFromFile(context);
+            context.Properties.Set(BuildProps.BuildVersion, version);
+            context.WriteInfo("The build version will be {0}", version);
         }
 
-        private static void TargetLoadSolution(ConcreteBuildRunner runner)
+        private static void TargetPackage(ITaskContext context)
         {
-            DetergentBuildRunner extendedRunner = (DetergentBuildRunner)runner;
+            FullPath packagesDir = new FullPath(context.Properties.Get(BuildProps.ProductRootDir, "."));
+            packagesDir = packagesDir.CombineWith(context.Properties.Get<string>(BuildProps.BuildDir));
+            FullPath simplexPackageDir = packagesDir.CombineWith("Detergent");
+            FileFullPath zipFileName = packagesDir.AddFileName(
+                "Detergent-{0}.zip",
+                context.Properties.Get<Version>(BuildProps.BuildVersion));
 
-            extendedRunner
-                .LoadSolution("Detergent.2010.sln");
-            extendedRunner
-                .HudsonFetchBuildVersion ();
+            StandardPackageDef packageDef = new StandardPackageDef("Detergent", context);
+            VSSolution solution = context.Properties.Get<VSSolution>(BuildProps.Solution);
+
+            VSProjectWithFileInfo projectInfo =
+                (VSProjectWithFileInfo)solution.FindProjectByName("Detergent");
+            LocalPath projectOutputPath = projectInfo.GetProjectOutputPath(
+                context.Properties.Get<string>(BuildProps.BuildConfiguration));
+            FullPath projectTargetDir = projectInfo.ProjectDirectoryPath.CombineWith(projectOutputPath);
+            packageDef.AddFolderSource(
+                "bin",
+                projectTargetDir,
+                false);
+
+            ICopier copier = new Copier(context);
+            CopyProcessor copyProcessor = new CopyProcessor(
+                 context,
+                 copier,
+                 simplexPackageDir);
+            copyProcessor
+                .AddTransformation("bin", new LocalPath(string.Empty));
+
+            IPackageDef copiedPackageDef = copyProcessor.Process(packageDef);
+
+            Zipper zipper = new Zipper(context);
+            ZipProcessor zipProcessor = new ZipProcessor(
+                context,
+                zipper,
+                zipFileName,
+                simplexPackageDir,
+                null,
+                "bin");
+            zipProcessor.Process(copiedPackageDef);
         }
 
-        private static void TargetPackage(ConcreteBuildRunner runner)
+        private static void TargetNuGet(ITaskContext context, string nugetId)
         {
-            PackageMaster master = new PackageMaster(runner, @"Builds\Packages");
-            master
-                .CleanPackagingTempDirectory()
-                .AddDir(PathBuilder.New("Detergent").Add(runner.GetProjectOutputPath("Detergent")))
-                    .ToDir("Detergent-{0}", runner.BuildVersion)
-                    .Exclude("log4net.xml")
-                    .Exclude("NVelocity.xml")
-                    .Exclude("PowerCollections.xml")
-                    .Exclude("Microsoft.Http.Extensions.pdb")
-                    .Exclude("Microsoft.Http.pdb")
-                    .Commit()
-                //.AddDir("Docs")
-                //    .ToDir("docs_source")
-                //    .Commit()
-                //.AddDir(PathBuilder.New(runner.BuildPackagesDir).Add("Docs"))
-                //    .ToDir("docs")
-                //    .Commit()
-                .Zip("Detergent-{0}.zip", runner.BuildVersion);
+            FullPath packagesDir = new FullPath(context.Properties.Get(BuildProps.ProductRootDir, "."));
+            packagesDir = packagesDir.CombineWith(context.Properties.Get<string>(BuildProps.BuildDir));
 
-            // wait for a while for the ZIP to be really created (problem on the build server)
-            Thread.Sleep(2000);
+            string sourceNuspecFile = string.Format(
+                CultureInfo.InvariantCulture,
+                @"{0}\{0}.nuspec",
+                nugetId);
+            FileFullPath destNuspecFile = packagesDir.AddFileName("{0}.nuspec", nugetId);
+
+            context.WriteInfo("Preparing the {0} file", destNuspecFile);
+            ExpandPropertiesTask task = new ExpandPropertiesTask(
+                sourceNuspecFile,
+                destNuspecFile.ToString(),
+                Encoding.UTF8,
+                Encoding.UTF8);
+            task.AddPropertyToExpand("version", context.Properties.Get<Version>(BuildProps.BuildVersion).ToString());
+            task.Execute(context);
+
+            // package it
+            context.WriteInfo("Creating a NuGet package file");
+            RunProgramTask progTask = new RunProgramTask(@"lib\NuGet\NuGet.exe");
+            progTask.SetWorkingDir(destNuspecFile.Directory.ToString());
+            progTask
+                .AddArgument("pack")
+                .AddArgument(destNuspecFile.FileName)
+                .AddArgument("-Verbose")
+                .Execute(context);
+
+            string nupkgFileName = string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}.{1}.nupkg",
+                nugetId,
+                context.Properties.Get<Version>(BuildProps.BuildVersion));
+            context.WriteInfo("NuGet package file {0} created", nupkgFileName);
+            
+            // publish the package file
+            context.WriteInfo("Pushing the NuGet package to the repository");
+            
+            //progTask = new RunProgramTask(@"lib\NuGet\NuGet.exe");
+            //progTask.SetWorkingDir(destNuspecFile.Directory.ToString());
+            //progTask
+            //    .AddArgument("push")
+            //    .AddArgument(nupkgFileName)
+            //    .AddArgument("hagawaga")
+            //    .AddArgument("-Source")
+            //    .AddArgument("http://ceibuildvm/nuget/")
+            //    .Execute(context);
         }
 
-        private static void TargetUpdateLib (
-            ConcreteBuildRunner runner,
-            string libBuildPackageFileName,
-            string libIncludeDirectory)
-        {
-            PathBuilder tempDir = PathBuilder.New (runner.BuildDir).Add ("Temp");
-            runner
-                .DeleteDirectory (tempDir, false)
-                .EnsureDirectoryPathExists (tempDir, false);
-
-            runner.Unzip (
-                libBuildPackageFileName,
-                tempDir);
-
-            string[] dirs = Directory.GetDirectories (tempDir);
-            string zipDir = Path.GetFileName (dirs[0]);
-            runner.CopyDirectoryStructure (tempDir.Add (zipDir), libIncludeDirectory, true);
-        }
-
-        //private static void TargetDocs(ConcreteBuildRunner runner, bool useDebugBin)
-        //{
-        //    runner.ProgramRunner
-        //        .AddArgument("html")
-        //        .AddArgument(@"-i=Docs")
-        //        .AddArgument(@"-t=Docs\template.vm.html")
-        //        .AddArgument(@"-o={0}\docs", runner.BuildPackagesDir)
-        //        .AddArgument(@"-lf=Quiki.css");
-
-        //    if (useDebugBin)
-        //        runner.ProgramRunner.Run
-        //            (PathBuilder.New("Quiki.Console").Add(@"bin\Debug").Add("Quiki.Console.exe"));
-        //    else
-        //        runner.ProgramRunner.Run(GetConsoleOutputPath(runner).Add("Quiki.Console.exe"));
-        //}
+        private const string CompanyName = "Comtrade d.o.o.";
+        private const string CompanyCopyright = "Copyright (C) 2010 Comtrade d.o.o.";
     }
 }

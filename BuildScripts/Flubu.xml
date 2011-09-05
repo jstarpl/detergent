@@ -4,563 +4,73 @@
         <name>Flubu</name>
     </assembly>
     <members>
-        <member name="T:Flubu.Builds.BuildProductsRegistry`1">
-            <summary>
-            Registry of products of a build. The products will be collected, packaged and sent to the build server's artifact directory
-            after a successful build.
-            </summary>
-            <typeparam name="TRunner">The concrete type of the runner.</typeparam>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.#ctor(`0)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/> class.
-            </summary>
-            <param name="runner">The build runner to use.</param>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.AddAllWebProjects(System.String,System.Boolean)">
-            <summary>
-            Adds all VisualStudio Web projects registered in the solution to the list of build products.
-            </summary>
-            <param name="productPartId">The ID of the product part Web projects will belong to.</param>
-            <param name="includeDebugFiles">Indicates whether the PDB files should be included in the package.</param>
-            <returns>
-            This same instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.AddDirectory(System.String,System.String,System.String)">
-            <summary>
-            Adds the specified directory to the list of build products.
-            </summary>
-            <param name="productPartId">The ID of the product part this directory belongs to.</param>
-            <param name="sourceDirectoryPath">The source directory path from where the files will be copied.</param>
-            <param name="productDirectoryPath">The path relative to the package directory where this product's files will be copied.</param>
-            <returns>
-            This same instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.AddDirectory(System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            Adds the specified directory to the list of build products.
-            </summary>
-            <param name="productPartId">The ID of the product part this directory belongs to.</param>
-            <param name="sourceDirectoryPath">The source directory path from where the files will be copied.</param>
-            <param name="productDirectoryPath">The path relative to the package directory where this product's files will be copied.</param>
-            <param name="inclusionPattern">The inclusion regular expression pattern for files.</param>
-            <param name="exclusionPattern">The exclusion regular expression pattern for files.</param>
-            <returns>
-            This same instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.AddFile(System.String,System.String,System.String)">
-            <summary>
-            Adds the specified file to the list of build products.
-            </summary>
-            <param name="productPartId">The ID of the product part this directory belongs to.</param>
-            <param name="sourceFileName">Name of the file to be added.</param>
-            <param name="destinationFileName">The path relative to the package directory where this file will be copied.</param>
-            <returns>
-            This same instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.AddProject(System.String,System.String,System.Boolean)">
-            <summary>
-            Adds the specified VisualStudio project to the list of build products.
-            </summary>
-            <param name="productPartId">The ID of the product part this project belongs to.</param>
-            <param name="projectName">Name of the project. This name will be used as a directory name where all the product's
-            files will be copied.</param>
-            <param name="includeDebugFiles">Indicates whether the PDB files should be included in the package.</param>
-            <returns>
-            This same instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.AddProject(System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            Adds the specified VisualStudio project to the list of build products.
-            </summary>
-            <param name="productPartId">The ID of the product part this project belongs to.</param>
-            <param name="projectName">Name of the project.</param>
-            <param name="productDirectoryPath">The path relative to the package directory where this product's files will be copied.
-            If set to <see cref="F:System.String.Empty"/>, the files will be copied directly on the top-level directory.</param>
-            <param name="includeDebugFiles">Indicates whether the PDB files should be included in the package.</param>
-            <returns>
-            This same instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.ClearRegistry">
-            <summary>
-            Clears the build products registry allowing a new products set to be organized.
-            </summary>
-            <returns>
-            This same instance of the <see cref="T:Flubu.Builds.BuildProductsRegistry`1"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildProductsRegistry`1.ListFilesForProductParts(System.String[])">
-            <summary>
-            Lists all of files which belong to the specified product parts.
-            </summary>
-            <param name="ids">The IDs of product parts. If the list is empty, the method will use all available product parts.</param>
-            <returns>A list of files files which belong to the specified product parts.</returns>
-        </member>
-        <member name="P:Flubu.Builds.BuildProductsRegistry`1.HasAnyProducts">
-            <summary>
-            Gets a value indicating whether this instance of build products registry has any products.
-            </summary>
-            <value>
-                <c>true</c> if this instance has any products; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="T:Flubu.Builds.BuildRunner`1">
-            <summary>
-            A specialization of the <see cref="T:Flubu.FlubuRunner`1"/> oriented towards building .NET solutions.
-            </summary>
-            <typeparam name="TRunner">The concrete type of the runner.</typeparam>
-        </member>
-        <member name="T:Flubu.FlubuRunner`1">
-            <summary>
-            A base class for fluent building.
-            </summary>
-            <typeparam name="TRunner">The concrete type of the runner.</typeparam>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.AssertFileExists(System.String,System.String)">
-            <summary>
-            Asserts that the specified file exists. If the file does not exist,
-            the runner will fail.
-            </summary>
-            <param name="fileDescription">The file description.</param>
-            <param name="fileName">Name of the file.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.Beep(Flubu.MessageBeepType)">
+        <member name="M:Flubu.Beeper.Beep(Flubu.MessageBeepType)">
             <summary>
             Sounds a beep.
             </summary>
             <param name="messageBeepType">Type of the message beep.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.Complete">
+        <member name="T:Flubu.TaskBase">
             <summary>
-            Marks the runner as having completed its work sucessfully. This is the last method
-            that should be called on the runner before it gets disposed.
+            A base abstract class from which tasks can be implemented.
             </summary>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.CopyDirectoryStructure(System.String,System.String,System.Boolean)">
+        <member name="T:Flubu.ITask">
             <summary>
-            Copies the directory structure (and the files) to the destination directory.
-            </summary>
-            <param name="sourcePath">The source path.</param>
-            <param name="destinationPath">The destination path.</param>
-            <param name="overwriteExisting">if set to <c>true</c>, existing files will be overwriten.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.CopyDirectoryStructure(System.String,System.String,System.Boolean,System.String,System.String)">
-            <summary>
-            Copies the directory structure (and the files) to the destination directory.
-            </summary>
-            <param name="sourcePath">The source path.</param>
-            <param name="destinationPath">The destination path.</param>
-            <param name="overwriteExisting">if set to <c>true</c>, existing files will be overwriten.</param>
-            <param name="inclusionRegexPattern">The inclusion Regular expression pattern. 
-            All files whose paths match this regular expression
-            will be copied. If the <see cref="!:inclusionRegexPattern"/> is <c>null</c>, it will be ignored.</param>
-            <param name="exclusionRegexPattern">The exclusion Regular expression pattern. 
-            All files whose paths match this regular expression
-            will not be copied. If the <see cref="!:exclusionRegexPattern"/> is <c>null</c>, it will be ignored.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.CreateDirectory(System.String,System.Boolean)">
-            <summary>
-            Creates a directory.
-            </summary>
-            <param name="directoryPath">The directory path.</param>
-            <param name="failIfAlreadyExists">if set to <c>true</c>, the method will
-            throw an exception if the directory already exists.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.DeleteFiles(System.String,System.String,System.Boolean)">
-            <summary>
-            Deletes files which match the file pattern.
-            </summary>
-            <param name="directoryPath">The directory path from which to start searching for files.</param>
-            <param name="filePattern">The file pattern.</param>
-            <param name="recursive">if set to <c>true</c>, the method will delete matching files in subdirectories too;
-            otherwise it will just delete files in the top directory.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or
-            resetting unmanaged resources.
+            Specifies basic properties and methods for a task.
             </summary>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.EnsureDirectoryPathExists(System.String,System.Boolean)">
+        <member name="M:Flubu.ITask.Execute(Flubu.ITaskContext)">
             <summary>
-            Ensures the directory path exists. If it does not, the method creates all the 
-            necessary directories in the path.
+            Executes the task using the specified script execution environment.
             </summary>
-            <param name="path">The path to check.</param>
-            <param name="containsFileName">if set to <c>true</c>, the path contains the file name.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.ForEachFile(System.String,System.String,System.Action{System.String})">
+        <member name="P:Flubu.ITask.Description">
             <summary>
-            Executes the specified action for each file in a directory.
+            Gets the task description.
             </summary>
-            <param name="directory">The directory where to look for files.</param>
-            <param name="searchPattern">The search pattern - only files matching the pattern will be used.</param>
-            <param name="funcToExecute">The action to execute - the argument of the action will be a file name.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
+            <value>The task description.</value>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.FormatString(System.String,System.Object[])">
+        <member name="M:Flubu.TaskBase.Execute(Flubu.ITaskContext)">
             <summary>
-            Formats the string (using <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>).
+            Executes the task using the specified script execution environment.
             </summary>
-            <param name="format">The format string.</param>
-            <param name="args">The arguments.</param>
-            <returns>A formatted string.</returns>
+            <remarks>This method implements the basic reporting and error handling for
+            classes which inherit the <see cref="T:Flubu.TaskBase"/> class.</remarks>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.HasTarget(System.String)">
+        <member name="M:Flubu.TaskBase.DoExecute(Flubu.ITaskContext)">
             <summary>
-            Determines whether the specified target exists.
+            Abstract method defining the actual work for a task.
             </summary>
-            <param name="targetName">Name of the target.</param>
-            <returns>
-                <c>true</c> if the specified target exists; otherwise, <c>false</c>.
-            </returns>
+            <remarks>This method has to be implemented by the inheriting task.</remarks>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.ImpersonateUser(System.String,System.String,System.String)">
+        <member name="P:Flubu.TaskBase.Description">
             <summary>
-            Impersonates a specified user.
+            Gets the task description.
             </summary>
-            <remarks>The impersonation will be automatically revoked at the end of the runner execution.</remarks>
-            <param name="userName">The user name.</param>
-            <param name="domain">The user domain.</param>
-            <param name="password">The user password.</param>
-            <returns>The same instance of this <see cref="T:Flubu.FlubuRunner`1"/>.</returns>
+            <value>The task description.</value>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.RunTarget(System.String)">
+        <member name="P:Flubu.TaskBase.IsSafeToExecuteInDryRun">
             <summary>
-            Runs the specified target.
+            Gets a value indicating whether this instance is safe to execute in dry run mode.
             </summary>
-            <param name="targetName">Name of the target.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
+            <value>
+                <c>true</c> if this instance is safe to execute in dry run mode; otherwise, <c>false</c>.
+            </value>
         </member>
-        <member name="M:Flubu.FlubuRunner`1.SetDefaultTarget(Flubu.FlubuRunnerTarget{`0})">
+        <member name="P:Flubu.TaskBase.LogDuration">
             <summary>
-            Sets the default target for the runner.
+            Gets a value indicating whether the duration of the task should be logged after the task
+            has finished.
             </summary>
-            <param name="target">The target to be set as the default one.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.TargetHelp(`0)">
-            <summary>
-            The target for displaying help in the command line.
-            </summary>
-            <param name="runner">The runner.</param>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.Unzip(System.String,System.String)">
-            <summary>
-            Unzips the specified zip file to a destination directory.
-            </summary>
-            <param name="zipFileName">Name of the zip file.</param>
-            <param name="destinationDirectory">The destination directory where files should be unzipped to.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.Run``1(Flubu.FlubuRunner{``0},System.String[])">
-            <summary>
-            Command line parser and runner helper. 
-            </summary>
-            <typeparam name="T">The concrete type of the runner.</typeparam>
-            <param name="runner">See <see cref="T:Flubu.FlubuRunner`1"/></param>
-            <param name="arguments">Command line arguments.</param>
-            <returns>0 if success, otherwise error code is returned.</returns>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.Dispose(System.Boolean)">
-            <summary>
-            Disposes the object.
-            </summary>
-            <param name="disposing">If <code>false</code>, cleans up native resources. 
-            If <code>true</code> cleans up both managed and native resources</param>
-        </member>
-        <member name="M:Flubu.FlubuRunner`1.RegisterDisposableObject(System.IDisposable)">
-            <summary>
-            Registers a disposable object which should be disposed right before the runner itself is disposed.
-            </summary>
-            <param name="disposable">The disposable object.</param>
-        </member>
-        <member name="P:Flubu.FlubuRunner`1.DefaultTarget">
-            <summary>
-            Gets the default target for this runner.
-            </summary>
-            <remarks>The default target is the one which will be executed if
-            the target is not specified in the command line.</remarks>
-            <value>The default target.</value>
-        </member>
-        <member name="P:Flubu.FlubuRunner`1.LastCopiedFilesList">
-            <summary>
-            Gets the list of all copied destination files that were copied during the last execution of the <see cref="M:Flubu.FlubuRunner`1.CopyDirectoryStructure(System.String,System.String,System.Boolean)"/>
-            or <see cref="M:Flubu.FlubuRunner`1.CopyDirectoryStructure(System.String,System.String,System.Boolean,System.String,System.String)"/> call.
-            </summary>
-            <value>The last copied files list.</value>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.CopyBuildLogsToCCNet">
-            <summary>
-            Copies all of the build results to the CCNet artifact directory.
-            </summary>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.CopyBuildProductToCCNet(System.String)">
-            <summary>
-            Copies the last packaged build product to CruiseControl.NET artifact directory.
-            </summary>
-            <param name="buildProductDestinationFileNameFormat">Specifies the format of the build product destination file. The format uses the following
-            arguments:
-            <list type="bullet">
-                    <item>
-                        <term>{0}</term>
-                        <description>ProductId</description>
-                    </item>
-                    <item>
-                        <term>{1}</term>
-                        <description>BuildVersion (4 numbers)</description>
-                    </item>
-                    <item>
-                        <term>{2}</term>
-                        <description>BuildVersion (major)</description>
-                    </item>
-                    <item>
-                        <term>{3}</term>
-                        <description>BuildVersion (minor)</description>
-                    </item>
-                    <item>
-                        <term>{4}</term>
-                        <description>File name of the last zip package (without the directory path)</description>
-                    </item>
-                </list></param>
-            <returns>The same instance of this <see cref="T:Flubu.Builds.BuildRunner`1"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.ExecuteSqlScriptFile(System.String,System.String,System.String)">
-            <summary>
-            Executes the specified SQL script file.
-            </summary>
-            <param name="scriptFileName">Name of the script file.</param>
-            <param name="userName">Name of the database user.</param>
-            <param name="password">The database user's password.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.ExecuteSqlScriptFile(System.String,System.String,System.String,System.String)">
-            <summary>
-            Executes the specified SQL script file.
-            </summary>
-            <param name="scriptFileName">Name of the script file.</param>
-            <param name="userName">Name of the database user.</param>
-            <param name="password">The database user's password.</param>
-            <param name="useDatabase">The database to run the script under. If <c>null</c>, the script will run under
-            the default database.</param>
-            <returns>The same instance of this <see cref="!:BuildRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.FetchBuildVersion">
-            <summary>
-            Fetches the build version, either from the local version info file or from CCNet
-            (if the build is running under CCNet).
-            </summary>
-            <returns>
-            The same instance of this <see cref="!:TRunner"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.FetchBuildVersion(System.Boolean)">
-            <summary>
-            Fetches the build version, either from the local version info file or from CCNet
-            (if the build is running under CCNet).
-            </summary>
-            <param name="loadFromFile">If not running under CCNet, fetch version from file or not.</param>
-            <returns>
-            The same instance of this <see cref="!:TRunner"/>.
-            </returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.GetProjectOutputPath(System.String)">
-            <summary>
-            Gets the output path for a specified VisualStudio project. The output path is relative
-            to the directory where the project file is located.
-            </summary>
-            <param name="projectName">Project name.</param>
-            <returns>The output path or <c>null</c> if the project is not compatibile.</returns>
-            <exception cref="T:System.ArgumentException">The method could not extract the data from the project file.</exception>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.GetProjectOutputPath(Flubu.Builds.VSSolutionBrowsing.VSProjectWithFileInfo)">
-            <summary>
-            Gets the output path for a specified VisualStudio project. The output path is relative
-            to the directory where the project file is located.
-            </summary>
-            <param name="projectWithFileInfo">Project info.</param>
-            <returns>The output path or <c>null</c> if the project is not compatibile.</returns>
-            <exception cref="T:System.ArgumentException">The method could not extract the data from the project file.</exception>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.LoadSolution(System.String)">
-            <summary>
-            Loads the specified VisualStudio solution and all of its projects.
-            </summary>
-            <param name="solutionFileName">Name of the solution file.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.PackageBuildProduct(System.String,System.String,System.String[])">
-            <summary>
-            Packages the build product into a zip file.
-            </summary>
-            <param name="zipFileNameFormat">
-            The zip file name format. The format uses the following arguments:
-            <list type="bullet">
-                <item>
-                    <term>{0}</term>
-                    <description>ProductId</description>
-                </item>
-                <item>
-                    <term>{1}</term>
-                    <description>BuildVersion (4 numbers)</description>
-                </item>
-            </list> 
-            </param>
-            <param name="rootDirectoryForProductFormat">The format for the root directory of the product. This will
-            be the root directory inside the package ZIP file. 
-            The format is the same as for the <see cref="!:zipFileNameFormat"/> parameter.</param>
-            <param name="productPartsIds">The list of product parts IDs which should be included in the package.
-            If the list is empty, the method packages all available product part IDs.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.PrepareWebApplications">
-            <summary>
-            Prepares web applications in IIS for registered VisualStudio Web projects.
-            </summary>
-            <returns>The same instance of this <see cref="!:BuildRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.RegisterAsWebProject(System.String,System.String)">
-            <summary>
-            Registers the specified project as a web project.
-            </summary>
-            <param name="projectName">Name of the project.</param>
-            <param name="webApplicationUrl">The project's Web application URL.</param>
-            <returns>The same instance of this <see cref="T:Flubu.Builds.BuildRunner`1"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.SetLibrariesDirectory(System.String)">
-            <summary>
-            Sets the root path to the 3rd party libraries directory.
-            </summary>
-            <param name="libDir">The root path to the 3rd party libraries directory..</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.CopyBuildProductFiles(System.String,System.String[])">
-            <summary>
-            Copies build products' files to an extra location in order to be able to zip them into packages later.
-            </summary>
-            <param name="rootDirectoryForProductFormat">The format for the root directory of the product. This will
-            be the root directory inside the package ZIP file. 
-            The format is the same as for the <see cref="M:Flubu.Builds.BuildRunner`1.PackageBuildProduct(System.String,System.String,System.String[])"/> method parameters.</param>
-            <param name="productPartsIds">The list of product parts IDs which should be included in the package.
-            If the list is empty, the method packages all available product part IDs.</param>
-            <returns>The same instance of this <see cref="!:TRunner"/>.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.EnsureBuildLogsTestDirectoryExists">
-            <summary>
-            Ensures the build logs directory exists and returns a full path to it.
-            </summary>
-            <returns>A full path to the build logs directory.</returns>
-        </member>
-        <member name="M:Flubu.Builds.BuildRunner`1.IncrementTestRunsCounter">
-            <summary>
-            Increments the test runs counter.
-            </summary>
-        </member>
-        <member name="P:Flubu.Builds.BuildRunner`1.BuildPackagesDir">
-            <summary>
-            Gets the build packages directory.
-            </summary>
-            <value>The build packages directory.</value>
-        </member>
-        <member name="P:Flubu.Builds.BuildRunner`1.LastZipPackageFileName">
-            <summary>
-            Gets the file name of the last zip package that was produced by calling the <see cref="M:Flubu.Builds.BuildRunner`1.PackageBuildProduct(System.String,System.String,System.String[])"/> method.
-            </summary>
-            <value>The file name of the last zip package.</value>
-        </member>
-        <member name="P:Flubu.Builds.BuildRunner`1.ProjectExtendedInfos">
-            <summary>
-            Gets the dictionary of extended information about VisualStudio projects in the currently
-            loaded solution. The dictionary key represents the project name.
-            </summary>
-            <value>The dictionary of VS project extended information.</value>
-        </member>
-        <member name="P:Flubu.Builds.BuildRunner`1.Solution">
-            <summary>
-            Gets the <see cref="T:Flubu.Builds.VSSolutionBrowsing.VSSolution"/> object for the loaded VisualStudio solution.
-            </summary>
-            <value>The <see cref="T:Flubu.Builds.VSSolutionBrowsing.VSSolution"/> object.</value>
-        </member>
-        <member name="T:Flubu.Builds.FileBuildProduct`1">
-            <summary>
-            Represents a single file as a build product.
-            </summary>
-            <typeparam name="TRunner">The type of the runner.</typeparam>
+            <value><c>true</c> if duration should be logged; otherwise, <c>false</c>.</value>
         </member>
         <member name="T:Flubu.Builds.VSSolutionBrowsing.VSProjectItem">
             <summary>
             Holds information about content items inside of a VisualStudio project.
-            </summary>
-        </member>
-        <member name="T:Flubu.Deployment.DeploymentRunner`1">
-            <summary>
-            A specialization of the <see cref="T:Flubu.FlubuRunner`1"/> oriented towards deploying 
-            .NET software.
-            </summary>
-            <typeparam name="TRunner">The concrete type of the runner.</typeparam>
-        </member>
-        <member name="M:Flubu.Deployment.DeploymentBase`1.Configure">
-            <summary>
-            Method that will configure available build targets.
-            </summary>
-        </member>
-        <member name="M:Flubu.Deployment.DeploymentBase`1.Run">
-            <summary>
-            Target runner.
-            </summary>
-            <returns>0 if all ok.</returns>
-        </member>
-        <member name="P:Flubu.Deployment.DeploymentBase`1.Arguments">
-            <summary>
-            Gets or sets Command line arguments pased to build runner.
-            </summary>
-        </member>
-        <member name="P:Flubu.ExternalProgramRunner`1.LastExitCode">
-            <summary>
-            Gets the exit code of the last external program that was run by the runner.
-            </summary>
-            <value>The exit code of the last external program.</value>
-        </member>
-        <member name="T:Flubu.FlubuCCNetListener">
-            <summary>
-            Custom build listener for Flubu. This listener writes the X last messages to a file
-            for viewing the build progress in CCNET.
-            The extra listenfile is XML-based, consisting in the hierarchy of the NAnt project
-            and the last X messages under the last target of the NAnt project.
-            </summary>
-            <remarks>The code is adopted from the custom build listener for NAnt (http://confluence.public.thoughtworks.org/display/CCNETCOMM/Viewing+build+progress+with+Nant+and+MSBuild).
-            </remarks>
-        </member>
-        <member name="M:Flubu.FlubuCCNetListener.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or
-            resetting unmanaged resources.
-            </summary>
-        </member>
-        <member name="M:Flubu.FlubuCCNetListener.Dispose(System.Boolean)">
-            <summary>
-            Disposes the object.
-            </summary>
-            <param name="disposing">If <code>false</code>, cleans up native resources. 
-            If <code>true</code> cleans up both managed and native resources</param>
-        </member>
-        <member name="T:Flubu.Builds.ConcreteBuildRunner">
-            <summary>
-            A non-generic version of the <see cref="T:Flubu.Builds.BuildRunner`1"/> class.
             </summary>
         </member>
         <member name="T:Flubu.Builds.VSSolutionBrowsing.VSProject">
@@ -618,6 +128,17 @@
             <summary>
             Holds information about a VisualStudio project.
             </summary>
+        </member>
+        <member name="M:Flubu.Builds.VSSolutionBrowsing.VSProjectWithFileInfo.GetProjectOutputPath(System.String)">
+            <summary>
+            Gets the output path for a specified VisualStudio project. The output path is relative
+            to the directory where the project file is located.
+            </summary>
+            <param name="buildConfiguration">The build configuration.</param>
+            <returns>
+            The output path or <c>null</c> if the project is not compatibile.
+            </returns>
+            <exception cref="T:System.ArgumentException">The method could not extract the data from the project file.</exception>
         </member>
         <member name="P:Flubu.Builds.VSSolutionBrowsing.VSProjectWithFileInfo.Project">
             <summary>
@@ -792,11 +313,103 @@
             </summary>
             <value>The VisualStudio project types dictionary.</value>
         </member>
-        <member name="M:Flubu.Log4NetLogger.Dispose">
+        <member name="M:Flubu.FlubuEnvironment.GetDotNetFWDir(System.String)">
             <summary>
-                                Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            Gets the path to the .NET Framework directory.
             </summary>
-            <filterpriority>2</filterpriority>
+            <param name="dotNetVersion">The version of the .NET (example: "v2.0.50727").</param>
+            <returns>
+            The path to the .NET Framework directory.
+            </returns>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.IsWinServer2003">
+            <summary>
+            Gets a value indicating whether the script is running on Windows Server 2003.
+            </summary>
+            <value>
+                <c>true</c> if the script is running on Windows Server 2003; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.Net10VersionNumber">
+            <summary>
+            Gets the .NET version number for .NET 1.0.
+            </summary>
+            <value>.NET version number for .NET 1.0.</value>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.Net11VersionNumber">
+            <summary>
+            Gets the .NET version number for .NET 1.1.
+            </summary>
+            <value>.NET version number for .NET 1.1.</value>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.Net20VersionNumber">
+            <summary>
+            Gets the .NET version number for .NET 2.0.
+            </summary>
+            <value>.NET version number for .NET 2.0.</value>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.Net30VersionNumber">
+            <summary>
+            Gets the .NET version number for .NET 3.0.
+            </summary>
+            <value>.NET version number for .NET 3.0.</value>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.Net35VersionNumber">
+            <summary>
+            Gets the .NET version number for .NET 3.0.
+            </summary>
+            <value>.NET version number for .NET 3.0.</value>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.Net40VersionNumber">
+            <summary>
+            Gets the .NET version number for .NET 3.0.
+            </summary>
+            <value>.NET version number for .NET 3.0.</value>
+        </member>
+        <member name="P:Flubu.FlubuEnvironment.SystemRootDir">
+            <summary>
+            Gets the Windows system root directory path.
+            </summary>
+            <value>The Windows system root directory path.</value>
+        </member>
+        <member name="P:Flubu.FullPath.ParentPath">
+            <summary>
+            Gets the path that is a parent to the current path in this object.
+            </summary>
+            <value>The parent path.</value>
+        </member>
+        <member name="P:Flubu.LocalPath.ParentPath">
+            <summary>
+            Gets the path that is a parent to the current path in this object.
+            </summary>
+            <value>The parent path.</value>
+        </member>
+        <member name="M:Flubu.Targeting.ITarget.DependsOn(System.String[])">
+            <summary>
+            Specifies targets on which this target depends on.
+            </summary>
+            <param name="targetNames">The dependency target names.</param>
+            <returns>This same instance of <see cref="T:Flubu.Targeting.ITarget"/>.</returns>
+        </member>
+        <member name="M:Flubu.Targeting.ITarget.SetAsDefault">
+            <summary>
+            Sets the target as the default target for the runner.
+            </summary>
+            <returns>This same instance of <see cref="T:Flubu.Targeting.ITarget"/>.</returns>
+        </member>
+        <member name="M:Flubu.Targeting.ITarget.SetAsHidden">
+            <summary>
+            Sets the target as hidden. Hidden targets will not be
+            visible in the list of targets displayed to the user as help.
+            </summary>
+            <returns>This same instance of <see cref="!:FlubuRunnerTarget&lt;TRunner&gt;"/>.</returns>
+        </member>
+        <member name="P:Flubu.Targeting.ITarget.IsHidden">
+            <summary>
+            Gets a value indicating whether this target is hidden. Hidden targets will not be
+            visible in the list of targets displayed to the user as help.
+            </summary>
+            <value><c>true</c> if this target is hidden; otherwise, <c>false</c>.</value>
         </member>
         <member name="F:Flubu.MessageBeepType.Default">
             <summary>
@@ -876,613 +489,66 @@
             Indicates the Windows Server 2003 operating system.
             </summary>
         </member>
-        <member name="M:Flubu.Packaging.CopyProcessor.AddFileTransformation(System.String,System.String)">
-            <summary>
-            Replace all occurences of source filename with newFileName.
-            </summary>
-            <param name="fileName">Source file name to replace.</param>
-            <param name="newFileName">Replace with new name.</param>
-            <returns>Returns <see cref="T:Flubu.Packaging.CopyProcessor"/>.</returns>
-        </member>
-        <member name="T:Flubu.PathBuilder">
-            <summary>
-            A utility class for building file paths.
-            </summary>
-            <remarks><see cref="T:Flubu.PathBuilder"/> provides a fluent interface for building file paths. 
-            The class is a immutable class.</remarks>
-        </member>
-        <member name="M:Flubu.PathBuilder.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.PathBuilder"/> class
-            using a specified path.
-            </summary>
-            <param name="path">The path to use.</param>
-        </member>
-        <member name="M:Flubu.PathBuilder.Add(System.String)">
-            <summary>
-            Adds the specified file path to the existing path and returns a new <see cref="T:Flubu.PathBuilder"/>
-            object with the combined path.
-            </summary>
-            <param name="additionalPath">The path to add.</param>
-            <returns>A new <see cref="T:Flubu.PathBuilder"/> object with the combined path.</returns>
-        </member>
-        <member name="M:Flubu.PathBuilder.EnsureExists">
-            <summary>
-            Ensures the path contained in this object actually exists.
-            </summary>
-            <returns>This same object.</returns>
-        </member>
-        <member name="M:Flubu.PathBuilder.New(System.String)">
-            <summary>
-            Creates a new <see cref="T:Flubu.PathBuilder"/> with the specified path.
-            </summary>
-            <param name="path">The file path.</param>
-            <returns>A new <see cref="T:Flubu.PathBuilder"/> object.</returns>
-        </member>
-        <member name="M:Flubu.PathBuilder.ToString">
-            <summary>
-            Returns a file path contained in this object.
-            </summary>
-            <returns>A file path.</returns>
-        </member>
-        <member name="M:Flubu.PathBuilder.op_Implicit(System.String)~Flubu.PathBuilder">
-            <summary>
-            Performs an implicit conversion from <see cref="T:System.String"/> to <see cref="T:Flubu.PathBuilder"/>.
-            </summary>
-            <param name="path">The file path to use.</param>
-            <returns>The result of the conversion.</returns>
-        </member>
-        <member name="M:Flubu.PathBuilder.op_Implicit(Flubu.PathBuilder)~System.String">
-            <summary>
-            Performs an implicit conversion from <see cref="T:Flubu.PathBuilder"/> to <see cref="T:System.String"/>.
-            </summary>
-            <param name="pathBuilder">The path builder object.</param>
-            <returns>A file path contained in this <see cref="T:Flubu.PathBuilder"/> object.</returns>
-        </member>
-        <member name="P:Flubu.PathBuilder.Path">
-            <summary>
-            Gets the file path contained in this object.
-            </summary>
-            <value>The file path contained in this object.</value>
-        </member>
-        <member name="P:Flubu.PathBuilder.ParentPath">
-            <summary>
-            Gets the path that is a parent to the current path in this object.
-            </summary>
-            <value>The parent path.</value>
-        </member>
-        <member name="M:Flubu.IScriptExecutionEnvironment.GetDotNetFWDir(System.String)">
-            <summary>
-            Gets the path to the .NET Framework directory.
-            </summary>
-            <param name="dotNetVersion">The version of the .NET (example: "v2.0.50727").</param>
-            <returns>The path to the .NET Framework directory.</returns>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.ScriptName">
-            <summary>
-            Gets or sets the name of the script.
-            </summary>
-            <value>The name of the script.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.InteractiveMode">
-            <summary>
-            Gets or sets a value indicating whether the execution environment runs in an interactive mode.
-            </summary>
-            <remarks>When the execution environment is running in the interactive mode, the user has
-            the ability to influence certain aspects of the environment. One example is entering values
-            for missing configuration settings.</remarks>
-            <value><c>true</c> if the execution environment runs in an interactive mode; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.IsWinServer2003">
-            <summary>
-            Gets a value indicating whether the script is running on Windows Server 2003.
-            </summary>
-            <value>
-                <c>true</c> if the script is running on Windows Server 2003; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.Net10VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 1.0.
-            </summary>
-            <value>.NET version number for .NET 1.0.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.Net11VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 1.1.
-            </summary>
-            <value>.NET version number for .NET 1.1.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.Net20VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 2.0.
-            </summary>
-            <value>.NET version number for .NET 2.0.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.Net30VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 3.0.
-            </summary>
-            <value>.NET version number for .NET 3.0.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.Net35VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 3.5.
-            </summary>
-            <value>.NET version number for .NET 3.5.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.Net40VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 4.0.
-            </summary>
-            <value>.NET version number for .NET 4.0.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.SystemRootDir">
-            <summary>
-            Gets the Windows system root directory path.
-            </summary>
-            <value>The Windows system root directory path.</value>
-        </member>
-        <member name="P:Flubu.IScriptExecutionEnvironment.DryRun">
-            <summary>
-            Gets or sets a value indicating whether to dry-run the script. 
-            When set to <c>true</c>, the tasks are not really executed,
-            instead just a log of activities is created.
-            </summary>
-        </member>
-        <member name="M:Flubu.ScriptExecutionEnvironmentBase.GetDotNetFWDir(System.String)">
-            <summary>
-            Gets the path to the .NET Framework directory.
-            </summary>
-            <param name="dotNetVersion">The version of the .NET (example: "v2.0.50727").</param>
-            <returns>
-            The path to the .NET Framework directory.
-            </returns>
-        </member>
-        <member name="M:Flubu.ScriptExecutionEnvironmentBase.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or
-            resetting unmanaged resources.
-            </summary>
-        </member>
-        <member name="M:Flubu.ScriptExecutionEnvironmentBase.Dispose(System.Boolean)">
-            <summary>
-            Disposes the object.
-            </summary>
-            <param name="disposing">If <code>false</code>, cleans up native resources. 
-            If <code>true</code> cleans up both managed and native resources</param>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.DryRun">
-            <summary>
-            Gets or sets a value indicating whether to dry-run the script. 
-            When set to <c>true</c>, the tasks are not really executed,
-            instead just a log of activities is created.
-            </summary>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.InteractiveMode">
-            <summary>
-            Gets or sets a value indicating whether the execution environment runs in an interactive mode.
-            </summary>
-            <remarks>When the execution environment is running in the interactive mode, the user has
-            the ability to influence certain aspects of the environment. One example is entering values
-            for missing configuration settings.</remarks>
-            <value><c>true</c> if the execution environment runs in an interactive mode; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.IsWinServer2003">
-            <summary>
-            Gets a value indicating whether the script is running on Windows Server 2003.
-            </summary>
-            <value>
-                <c>true</c> if the script is running on Windows Server 2003; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.Net10VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 1.0.
-            </summary>
-            <value>.NET version number for .NET 1.0.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.Net11VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 1.1.
-            </summary>
-            <value>.NET version number for .NET 1.1.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.Net20VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 2.0.
-            </summary>
-            <value>.NET version number for .NET 2.0.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.Net30VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 3.0.
-            </summary>
-            <value>.NET version number for .NET 3.0.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.Net35VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 3.0.
-            </summary>
-            <value>.NET version number for .NET 3.0.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.Net40VersionNumber">
-            <summary>
-            Gets the .NET version number for .NET 3.0.
-            </summary>
-            <value>.NET version number for .NET 3.0.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.ScriptName">
-            <summary>
-            Gets or sets the name of the script.
-            </summary>
-            <value>The name of the script.</value>
-        </member>
-        <member name="P:Flubu.ScriptExecutionEnvironmentBase.SystemRootDir">
-            <summary>
-            Gets the Windows system root directory path.
-            </summary>
-            <value>The Windows system root directory path.</value>
-        </member>
-        <member name="M:Flubu.ConsoleExecutionEnvironment.#ctor(System.String,System.String,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.ConsoleExecutionEnvironment"/> class.
-            </summary>
-            <param name="scriptName">Name of the script.</param>
-            <param name="logFileName">Name of the log file (including the path).</param>
-            <param name="howManyOldLogsToKeep">The how many old log files the script should keep.</param>
-        </member>
-        <member name="P:Flubu.IFlubuRunnerTarget.Description">
-            <summary>
-            Gets the description of the target.
-            </summary>
-            <value>The description of the target.</value>
-        </member>
-        <member name="P:Flubu.IFlubuRunnerTarget.IsHidden">
-            <summary>
-            Gets a value indicating whether this target is hidden. Hidden targets will not be
-            visible in the list of targets displayed to the user as help.
-            </summary>
-            <value><c>true</c> if this target is hidden; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="M:Flubu.FlubuRunnerTarget`1.DependsOn(System.String[])">
+        <member name="M:Flubu.Targeting.Target.DependsOn(System.String[])">
             <summary>
             Specifies targets on which this target depends on.
             </summary>
             <param name="targetNames">The dependency target names.</param>
-            <returns>This same instance of <see cref="T:Flubu.FlubuRunnerTarget`1"/>.</returns>
+            <returns>This same instance of <see cref="T:Flubu.Targeting.ITarget"/>.</returns>
         </member>
-        <member name="M:Flubu.FlubuRunnerTarget`1.SetAsDefault">
+        <member name="M:Flubu.Targeting.Target.SetAsDefault">
             <summary>
             Sets the target as the default target for the runner.
             </summary>
-            <returns>This same instance of <see cref="T:Flubu.FlubuRunnerTarget`1"/>.</returns>
+            <returns>This same instance of <see cref="T:Flubu.Targeting.ITarget"/>.</returns>
         </member>
-        <member name="M:Flubu.FlubuRunnerTarget`1.SetAsHidden">
+        <member name="M:Flubu.Targeting.Target.SetAsHidden">
             <summary>
             Sets the target as hidden. Hidden targets will not be
             visible in the list of targets displayed to the user as help.
             </summary>
-            <returns>This same instance of <see cref="T:Flubu.FlubuRunnerTarget`1"/>.</returns>
+            <returns>This same instance of <see cref="T:Flubu.Targeting.ITarget"/>.</returns>
         </member>
-        <member name="P:Flubu.FlubuRunnerTarget`1.Description">
+        <member name="P:Flubu.Targeting.Target.Description">
             <summary>
             Gets the description of the target.
             </summary>
             <value>The description of the target.</value>
         </member>
-        <member name="P:Flubu.FlubuRunnerTarget`1.IsHidden">
+        <member name="P:Flubu.Targeting.Target.IsHidden">
             <summary>
             Gets a value indicating whether this target is hidden. Hidden targets will not be
             visible in the list of targets displayed to the user as help.
             </summary>
             <value><c>true</c> if this target is hidden; otherwise, <c>false</c>.</value>
         </member>
-        <member name="T:Flubu.Builds.BuildRunnerBase`1">
+        <member name="M:Flubu.Targeting.TargetTree.HasTarget(System.String)">
             <summary>
-            Task Runner helper.
+            Determines whether the specified target exists.
             </summary>
-            <typeparam name="TRunner">Concrete runner <see cref="T:Flubu.Builds.BuildRunner`1"/></typeparam>
+            <param name="targetName">Name of the target.</param>
+            <returns>
+                <c>true</c> if the specified target exists; otherwise, <c>false</c>.
+            </returns>
         </member>
-        <member name="M:Flubu.Builds.BuildRunnerBase`1.Configure">
+        <member name="M:Flubu.Targeting.TargetTree.TargetHelp(Flubu.ITaskContext)">
             <summary>
-            Method that will configure available build targets.
+            The target for displaying help in the command line.
             </summary>
+            <param name="context">The task context.</param>
         </member>
-        <member name="M:Flubu.Builds.BuildRunnerBase`1.Run">
+        <member name="P:Flubu.Targeting.TargetTree.DefaultTarget">
             <summary>
-            Target runner.
+            Gets the default target for this runner.
             </summary>
-            <returns>0 if all ok.</returns>
+            <remarks>The default target is the one which will be executed if
+            the target is not specified in the command line.</remarks>
+            <value>The default target.</value>
         </member>
-        <member name="P:Flubu.Builds.BuildRunnerBase`1.Arguments">
+        <member name="M:Flubu.TaskSession.Complete">
             <summary>
-            Gets or sets Command line arguments pased to build runner.
-            </summary>
-        </member>
-        <member name="T:Flubu.ITask">
-            <summary>
-            Specifies basic properties and methods for a task.
-            </summary>
-        </member>
-        <member name="M:Flubu.ITask.Execute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Executes the task using the specified script execution environment.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.ITask.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
-        <member name="T:Flubu.TaskBase">
-            <summary>
-            A base abstract class from which tasks can be implemented.
-            </summary>
-        </member>
-        <member name="M:Flubu.TaskBase.Execute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Executes the task using the specified script execution environment.
-            </summary>
-            <remarks>This method implements the basic reporting and error handling for
-            classes which inherit the <see cref="T:Flubu.TaskBase"/> class.</remarks>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="M:Flubu.TaskBase.DoExecute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Abstract method defining the actual work for a task.
-            </summary>
-            <remarks>This method has to be implemented by the inheriting task.</remarks>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.TaskBase.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
-        <member name="P:Flubu.TaskBase.IsSafeToExecuteInDryRun">
-            <summary>
-            Gets a value indicating whether this instance is safe to execute in dry run mode.
-            </summary>
-            <value>
-                <c>true</c> if this instance is safe to execute in dry run mode; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="M:Flubu.Tasks.Build.NDoc3Task.DoExecute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Abstract method defining the actual work for a task.
-            </summary>
-            <remarks>This method has to be implemented by the inheriting task.</remarks>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.Tasks.Build.NDoc3Task.WorkingDirectory">
-            <summary>
-            Gets or sets documentation working directory. (default=.)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Build.NDoc3Task.OutputDirectory">
-            <summary>
-            Gets or sets documentation output directory. (default=.\doc)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Build.NDoc3Task.AssembliesToDocument">
-            <summary>
-            Gets assemblies to document.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Build.NDoc3Task.NDoc3Path">
-            <summary>
-            Gets or sets NDoc3 application path.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Build.NDoc3Task.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
-        <member name="T:Flubu.Tasks.Tests.GallioUnitTestTask">
-            <summary>
-            Task for running unit tests with gallio echo runner.
-            <example>
-            GallioUnitTestTask task = new GallioUnitTestTask(
-                       Path.Combine("Hsl.PushDispatcherTest.SystemTest", GetProjectOutputPath("Hsl.PushDispatcherTest.SystemTest")),
-                       "Hsl.PushDispatcherTest.SystemTest.dll")
-                   {
-                       FixtureToRun = fixture,
-                       TestToRun = test
-                   };
-                   task.Execute(ScriptExecutionEnvironment);
-            </example>
-            </summary>
-        </member>
-        <member name="M:Flubu.Tasks.Tests.GallioUnitTestTask.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Tasks.Tests.GallioUnitTestTask"/> class.
-            </summary>
-            <param name="workingDirectory">Working directory for tests.</param>
-            <param name="assemblyToTest">Assembly to test.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Tests.GallioUnitTestTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Abstract method defining the actual work for a task.
-            </summary>
-            <remarks>This method has to be implemented by the inheriting task.</remarks>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.GallioUnitTestTask.WorkingDirectory">
-            <summary>
-            Gets or sets unit test working directory.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.GallioUnitTestTask.ReportDirectory">
-            <summary>
-            Gets or sets the report directory.
-            </summary>
-            <value>The report directory.</value>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.GallioUnitTestTask.AssemblyToTest">
-            <summary>
-            Gets or sets assembly to test.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.GallioUnitTestTask.GallioEchoPath">
-            <summary>
-            Gets or sets full path to Gallio.Echo.exe (.\lib\Gallio\bin\Gallio.Echo.exe)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.GallioUnitTestTask.FixtureToRun">
-            <summary>
-            Gets or sets test fixtures to run. (Fixture1, Fixture2, Fixture2)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.GallioUnitTestTask.TestToRun">
-            <summary>
-            Gets or sets tests to run. (Test1, Test2, Test3)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.GallioUnitTestTask.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
-        <member name="T:Flubu.Tasks.Tests.NCoverTask">
-            <summary>
-            Run tests with coverage (NCover).
-            <example>
-              NCoverTask task = new NCoverTask(Path.Combine("Testing\\UnitTests\\bin", BuildConfiguration),
-                       "Hsl.PD.UnitTests.dll")
-                   {
-                       NCoverExecutablePath = MakePathFromRootDir(@"lib\NCover\NCover.Console.exe"),
-                       TestToolPath = @"..\..\..\..\lib\NUnit\bin\net-2.0\nunit-console-x86.exe",
-                       ExcludeCategories = "Cassini, LongTest",
-                       TestToolType = UnitTestToolType.NUnit
-                   };
-                   task.Execute(ScriptExecutionEnvironment);
-            </example>
-            </summary>
-        </member>
-        <member name="M:Flubu.Tasks.Tests.NCoverTask.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Tasks.Tests.NCoverTask"/> class.
-            </summary>
-            <param name="workingDirectory">Working directory for tests.</param>
-            <param name="assemblyToTest">Assembly to test.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Tests.NCoverTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Abstract method defining the actual work for a task.
-            </summary>
-            <remarks>This method has to be implemented by the inheriting task.</remarks>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.WorkingDirectory">
-            <summary>
-            Gets or sets unit test working directory.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.AssemblyToTest">
-            <summary>
-            Gets or sets assembly to test.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.TestToolPath">
-            <summary>
-            Gets or sets unit test tool path. (Default: lib\NUnit\bin\net-2.0\nunit-console-x86.exe)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.NCoverExecutablePath">
-            <summary>
-            Gets or sets Full NCover test tool path. (Default: .\\lib\\NCover\\NCover.Console.exe)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.TestToolType">
-            <summary>
-            Gets or sets Unit test tool type. (Default: NUnit)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.ExcludeCategories">
-            <summary>
-            Gets or sets excluded categories for NUnit. Only applies when TestToolType is set to NUnit.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.FixtureToRun">
-            <summary>
-            Gets or sets test fixtures to run (Fixture1, Fixture2, Fixture2). Only applies when TestToolType is set to Gallio.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.TestToRun">
-            <summary>
-            Gets or sets tests to run (Test1, Test2, Test3).. Only applies when TestToolType is set to Gallio.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.OutputDirectory">
-            <summary>
-            Gets or sets output directory.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NCoverTask.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
-        <member name="T:Flubu.Tasks.Tests.NUnitTask">
-            <summary>
-            Run tests with NUnit.
-            <example>
-            NUnitTask task = new NUnitTask(Path.Combine("Testing\\UnitTests\\bin", BuildConfiguration),
-                       "Hsl.PD.UnitTests.dll")
-                   {
-                       ExcludeCategories = "Cassini, LongTest",
-                       NUnitPath = MakePathFromRootDir(@"lib\NUnit\bin\net-2.0\nunit-console-x86.exe"),
-                   };
-                   task.Execute(ScriptExecutionEnvironment);
-            </example>
-            </summary>
-        </member>
-        <member name="M:Flubu.Tasks.Tests.NUnitTask.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Tasks.Tests.NUnitTask"/> class.
-            </summary>
-            <param name="workingDirectory">Working directory to use.</param>
-            <param name="assemblyToTest">Assembly to test.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Tests.NUnitTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Abstract method defining the actual work for a task.
-            </summary>
-            <remarks>This method has to be implemented by the inheriting task.</remarks>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NUnitTask.WorkingDirectory">
-            <summary>
-            Gets or sets unit test working directory.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NUnitTask.AssemblyToTest">
-            <summary>
-            Gets or sets assembly to test.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NUnitTask.NUnitPath">
-            <summary>
-            Gets or sets NUnit application path.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NUnitTask.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.NUnitTask.ExcludeCategories">
-            <summary>
-            Gets or sets tests categories that will be excluded from test.
+            Marks the runner as having completed its work sucessfully. This is the last method
+            that should be called on the runner before it gets disposed.
             </summary>
         </member>
         <member name="T:Flubu.Tasks.Tests.UnitTestToolType">
@@ -1505,13 +571,13 @@
             Logs important enviroment information (machine name, OS version, etc).
             </summary>
         </member>
-        <member name="M:Flubu.Tasks.Configuration.LogScriptEnvironmentTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Configuration.LogScriptEnvironmentTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Configuration.LogScriptEnvironmentTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Configuration.LogScriptEnvironmentTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -1527,37 +593,17 @@
         </member>
         <member name="T:Flubu.Tasks.Configuration.ReadConfigurationTask">
             <summary>
-            Reads a configuration in XML form and stores it into <see cref="T:Flubu.IScriptExecutionEnvironment"/>
+            Reads a configuration in XML form and stores it into <see cref="T:Flubu.ITaskContext"/>
             configuration settings;
             </summary>
         </member>
-        <member name="M:Flubu.Tasks.Configuration.ReadConfigurationTask.ReadFromString(Flubu.IScriptExecutionEnvironment,System.String)">
-            <summary>
-            Reads configuration from a string.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-            <param name="configurationString">The configuration string.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Configuration.ReadConfigurationTask.ReadFromFile(Flubu.IScriptExecutionEnvironment,System.String)">
-            <summary>
-            Reads configuration from a file.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-            <param name="configurationFileName">The name of the configuration file.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Configuration.ReadConfigurationTask.ReadFromScriptConfigurationFile(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Reads configuration from a configuration file which has the same name as the running script.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Configuration.ReadConfigurationTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Configuration.ReadConfigurationTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Configuration.ReadConfigurationTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Configuration.ReadConfigurationTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -1585,20 +631,20 @@
             <param name="destinationPath">The destination path.</param>
             <param name="overwriteExisting">if set to <c>true</c> the task will overwrite existing destination files.</param>
         </member>
-        <member name="M:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String,System.Boolean)">
+        <member name="M:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.Execute(Flubu.ITaskContext,System.String,System.String,System.Boolean)">
             <summary>
             Copies a directory tree from the source to the destination.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
             <param name="sourcePath">The source path.</param>
             <param name="destinationPath">The destination path.</param>
             <param name="overwriteExisting">if set to <c>true</c> the task will overwrite existing destination files.</param>
         </member>
-        <member name="M:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
         <member name="P:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.CopiedFilesList">
             <summary>
@@ -1622,25 +668,25 @@
             will be copied. If the <see cref="P:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.InclusionPattern"/> is <c>null</c>, it will be ignored.</remarks>
             <value>The inclusion pattern.</value>
         </member>
-        <member name="P:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.TaskDescription">
+        <member name="P:Flubu.Tasks.FileSystem.CopyDirectoryStructureTask.Description">
             <summary>
             Gets the task description.
             </summary>
             <value>The task description.</value>
         </member>
-        <member name="P:Flubu.Tasks.FileSystem.CopyFileTask.TaskDescription">
+        <member name="P:Flubu.Tasks.FileSystem.CopyFileTask.Description">
             <summary>
             Gets the task description.
             </summary>
             <value>The task description.</value>
         </member>
-        <member name="P:Flubu.Tasks.FileSystem.DeleteDirectoryTask.TaskDescription">
+        <member name="P:Flubu.Tasks.FileSystem.DeleteDirectoryTask.Description">
             <summary>
             Gets the task description.
             </summary>
             <value>The task description.</value>
         </member>
-        <member name="P:Flubu.Tasks.FileSystem.DeleteFilesTask.TaskDescription">
+        <member name="P:Flubu.Tasks.FileSystem.DeleteFilesTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -1678,21 +724,21 @@
             </summary>
             <param name="identity">The identity.</param>
         </member>
-        <member name="M:Flubu.Tasks.FileSystem.SetAccessRuleTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String,System.Security.AccessControl.FileSystemRights,System.Security.AccessControl.AccessControlType)">
+        <member name="M:Flubu.Tasks.FileSystem.SetAccessRuleTask.Execute(Flubu.ITaskContext,System.String,System.String,System.Security.AccessControl.FileSystemRights,System.Security.AccessControl.AccessControlType)">
             <summary>
             Sets a file access rule for a specified file path and identities.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
             <param name="path">The file path.</param>
             <param name="identity">Identity (example: "Network Service").</param>
             <param name="fileSystemRights">File system rights.</param>
             <param name="accessControlType">Type of the access control.</param>
         </member>
-        <member name="M:Flubu.Tasks.FileSystem.SetAccessRuleTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.FileSystem.SetAccessRuleTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
         <member name="P:Flubu.Tasks.FileSystem.SetAccessRuleTask.Path">
             <summary>
@@ -1700,64 +746,11 @@
             </summary>
             <value>The file path for which the access rule should be set.</value>
         </member>
-        <member name="P:Flubu.Tasks.FileSystem.SetAccessRuleTask.TaskDescription">
+        <member name="P:Flubu.Tasks.FileSystem.SetAccessRuleTask.Description">
             <summary>
             Gets the task description.
             </summary>
             <value>The task description.</value>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.ControlApplicationPoolAction.Start">
-            <summary>
-            Start the application pool.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.ControlApplicationPoolAction.Stop">
-            <summary>
-            Stop the application pool.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.ControlApplicationPoolAction.Recycle">
-            <summary>
-            Recycle the application pool.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.CreateApplicationPoolMode.FailIfAlreadyExists">
-            <summary>
-            The task should fail if the application pool already exists.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.CreateApplicationPoolMode.UpdateIfExists">
-            <summary>
-            If the application pool already exists, it should be updated.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.CreateApplicationPoolMode.DoNothingIfExists">
-            <summary>
-            If the application pool already exists, the task should do nothing.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.CreateVirtualDirectoryMode.FailIfAlreadyExists">
-            <summary>
-            If the virtual directory already exists, the task should fail.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.CreateVirtualDirectoryMode.UpdateIfExists">
-            <summary>
-            If the virtual directory already exists, it should be updated.
-            </summary>
-        </member>
-        <member name="F:Flubu.Tasks.Iis.CreateVirtualDirectoryMode.DoNothingIfExists">
-            <summary>
-            If the virtual directory already exists, the task should do nothing.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Iis.GetLocalIisVersionTask.IsSafeToExecuteInDryRun">
-            <summary>
-            Gets a value indicating whether this instance is safe to execute in dry run mode.
-            </summary>
-            <value>
-                <c>true</c> if this instance is safe to execute in dry run mode; otherwise, <c>false</c>.
-            </value>
         </member>
         <member name="M:Flubu.Tasks.Misc.Log4NetConfigTask.AddConfigFile(System.String,System.String)">
             <summary>
@@ -1766,13 +759,13 @@
             <param name="configFileName">Name of the config file.</param>
             <param name="log4NetConfigXpath">XPath to the log4net configuration block.</param>
         </member>
-        <member name="M:Flubu.Tasks.Misc.Log4NetConfigTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Misc.Log4NetConfigTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Misc.Log4NetConfigTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Misc.Log4NetConfigTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -1804,13 +797,13 @@
             <param name="collection">The mail address collection the parsed addresses should be stored into.</param>
             <param name="addresses">The addresses in form of a string.</param>
         </member>
-        <member name="M:Flubu.Tasks.Misc.SendMailTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Misc.SendMailTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Misc.SendMailTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Misc.SendMailTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -1888,25 +881,25 @@
             <param name="isTransactional">if set to <c>true</c> the queue will be transactional; otherwise <c>false</c>.</param>
             <param name="mode">The task mode.</param>
         </member>
-        <member name="M:Flubu.Tasks.Msmq.CreateMessageQueueTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Msmq.CreateMessageQueueTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Msmq.CreateMessageQueueTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Msmq.CreateMessageQueueTask.Description">
             <summary>
             Gets the task description.
             </summary>
             <value>The task description.</value>
         </member>
-        <member name="M:Flubu.Tasks.Msmq.DeleteMessageQueueTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Msmq.DeleteMessageQueueTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Msmq.DeleteMessageQueueTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Msmq.DeleteMessageQueueTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -1923,141 +916,29 @@
             </summary>
             <param name="processName">Name of the process to be killed.</param>
         </member>
-        <member name="P:Flubu.Tasks.Processes.KillProcessTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Processes.KillProcessTask.Description">
             <summary>
             Gets the task description.
             </summary>
             <value>The task description.</value>
         </member>
-        <member name="T:Flubu.Tasks.Processes.RunProgramTask">
+        <member name="P:Flubu.Tasks.Processes.RunProgramTask.LastExitCode">
             <summary>
-            Runs an external program.
+            Gets the exit code of the last external program that was run by the runner.
             </summary>
-        </member>
-        <member name="M:Flubu.Tasks.Processes.RunProgramTask.#ctor(System.String,System.String,System.TimeSpan)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Tasks.Processes.RunProgramTask"/> class using the
-            specified program file path, command line arguments and program execution timeout.
-            </summary>
-            <param name="programFilePath">The program file path.</param>
-            <param name="arguments">Command line arguments.</param>
-            <param name="timeout">The program execution timeout.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Processes.RunProgramTask.#ctor(System.String,System.String,System.TimeSpan,System.String,System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Tasks.Processes.RunProgramTask"/> class using the
-            specified program file path, command line arguments, program execution timeout
-            and a specified user account.
-            </summary>
-            <param name="programFilePath">The program file path.</param>
-            <param name="arguments">Command line arguments.</param>
-            <param name="timeout">The program execution timeout.</param>
-            <param name="userName">UserName under which the external program should be executed.</param>
-            <param name="userDomain">User's domain.</param>
-            <param name="password">User's password.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Processes.RunProgramTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String,System.TimeSpan)">
-            <summary>
-            Runs an external program using the specified command line arguments.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-            <param name="programFilePath">The program file path.</param>
-            <param name="arguments">The arguments.</param>
-            <param name="timeout">The timeout.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Processes.RunProgramTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String,System.TimeSpan,System.String,System.String,System.String)">
-            <summary>
-            Runs an external program using the specified command line arguments and running
-            under a specified user account.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-            <param name="programFilePath">The program file path.</param>
-            <param name="arguments">Command line arguments.</param>
-            <param name="timeout">The program execution timeout.</param>
-            <param name="userName">UserName under which the external program should be executed.</param>
-            <param name="userDomain">User's domain.</param>
-            <param name="password">User's password.</param>
-        </member>
-        <member name="M:Flubu.Tasks.Processes.RunProgramTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Logs important enviroment information (machine name, OS version, etc).
-            </summary>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.Tasks.Processes.RunProgramTask.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
-        <member name="P:Flubu.Tasks.Processes.RunProgramTask.WorkingDirectory">
-            <summary>
-            Gets or sets working directory for process. 
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Processes.RunProgramTask.FailOnError">
-            <summary>
-            Gets or sets a value indicating whether flubu should throw an exception when exit code of the process != 0.
-            </summary>
-            <value><c>true</c> if [fail on error]; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioReportTask.WorkingDirectory">
-            <summary>
-            Gets or sets unit test working directory.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioReportTask.AccipioPath">
-            <summary>
-            Gets or sets Accipio application path. (lib\Accipio.Console\Accipio.Console.exe)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioReportTask.AccipioTransformsPath">
-            <summary>
-            Gets or sets Accipio transforms path. (WorkingDir\AccipioTransforms)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioReportTask.AccipioOutputPath">
-            <summary>
-            Gets or sets Accipio output path. (WorkingDir\AccipioTestReports)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioReportTask.AccipioTemplatePath">
-            <summary>
-            Gets or sets Accipio template path. (AccipioPath\TestReports)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioTransformTask.WorkingDirectory">
-            <summary>
-            Gets or sets unit test working directory.
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioTransformTask.AccipioPath">
-            <summary>
-            Gets or sets Accipio application path. (lib\Accipio.Console\Accipio.Console.exe)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioTransformTask.AccipioTransformsPath">
-            <summary>
-            Gets or sets Accipio transforms path. (WorkingDir\AccipioTransforms)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Tests.AccipioTransformTask.GallioReportPath">
-            <summary>
-            Gets or sets Accipio output path. (WorkingDir\GallioTestReports\LastTestResults.xml)
-            </summary>
-        </member>
-        <member name="P:Flubu.Tasks.Text.ExpandPropertiesTask.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
+            <value>The exit code of the last external program.</value>
         </member>
         <member name="T:Flubu.Tasks.Text.PeekXmlTask">
             <summary>
             Retrieves a value from an XML file.
             </summary>
+            <remarks>
+            If provided XPath does not find any matches, null is stored in specified configuration setting.
+            If provided XPath matches exactly one node, it's value is stored as <see cref="T:System.String"/> in specified configuration setting.
+            If provided XPath matches multiple nodes, their values are stored as <see cref="T:System.String"/>[] in specified configuration setting.
+            </remarks>
         </member>
-        <member name="M:Flubu.Tasks.Text.PeekXmlTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String,System.String)">
+        <member name="M:Flubu.Tasks.Text.PeekXmlTask.Execute(Flubu.ITaskContext,System.String,System.String,System.String)">
             <summary>
             Reads a specified value from an XML file and stores it as a specified configuration setting.
             </summary>
@@ -2065,14 +946,19 @@
             <param name="xmlFileName">The name of the configuration file.</param>
             <param name="xpath">The xpath of the value to read.</param>
             <param name="configurationSettingName">Name of the configuration setting into which the XML value will be stored.</param>
+            <remarks>
+            If provided <paramref name="xpath"/> does not find any matches, null is stored in configuration setting <paramref name="configurationSettingName"/>.
+            If provided <paramref name="xpath"/> matches exactly one node, it's value is stored as <see cref="T:System.String"/> in configuration setting <paramref name="configurationSettingName"/>.
+            If provided <paramref name="xpath"/> matches multiple nodes, their values are stored as <see cref="T:System.String"/>[] in configuration setting <paramref name="configurationSettingName"/>.
+            </remarks>
         </member>
-        <member name="M:Flubu.Tasks.Text.PeekXmlTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Text.PeekXmlTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Text.PeekXmlTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Text.PeekXmlTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -2086,13 +972,13 @@
                 <c>true</c> if this instance is safe to execute in dry run mode; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="M:Flubu.Tasks.Msmq.PurgeMessageQueueTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Msmq.PurgeMessageQueueTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Msmq.PurgeMessageQueueTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Msmq.PurgeMessageQueueTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -2131,13 +1017,13 @@
             <param name="childNodeName">Name of the new child node.</param>
             <param name="value">The value for the new child node.</param>
         </member>
-        <member name="M:Flubu.Tasks.Text.UpdateXmlFileTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Text.UpdateXmlFileTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Method defining the actual work for a task.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Text.UpdateXmlFileTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Text.UpdateXmlFileTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -2157,7 +1043,7 @@
             <param name="outputFile">The output file path.</param>
             <param name="xsltFile">The XSLT file path.</param>
         </member>
-        <member name="M:Flubu.Tasks.Text.XsltTransformTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String,System.String)">
+        <member name="M:Flubu.Tasks.Text.XsltTransformTask.Execute(Flubu.ITaskContext,System.String,System.String,System.String)">
             <summary>
             Transforms a specified input file to a specified output file using the specified XSLT file.
             </summary>
@@ -2166,13 +1052,13 @@
             <param name="outputFile">The output file path.</param>
             <param name="xsltFile">The XSLT file path.</param>
         </member>
-        <member name="M:Flubu.Tasks.Text.XsltTransformTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.Text.XsltTransformTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.Text.XsltTransformTask.TaskDescription">
+        <member name="P:Flubu.Tasks.Text.XsltTransformTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -2224,55 +1110,6 @@
             <param name="disposing">If <code>false</code>, cleans up native resources. 
             If <code>true</code> cleans up both managed and native resources</param>
         </member>
-        <member name="T:Flubu.Tasks.UserInterface.AskUserTask">
-            <summary>
-            Prompts the user for a response. Optionally stores the response into a specified configuration setting.
-            </summary>
-        </member>
-        <member name="M:Flubu.Tasks.UserInterface.AskUserTask.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Tasks.UserInterface.AskUserTask"/> class using the specified
-            user prompt string and configuration setting name.
-            </summary>
-            <param name="prompt">The user prompt string.</param>
-            <param name="configurationSettingName">Name of the configuration setting where the user input should be stored.</param>
-        </member>
-        <member name="M:Flubu.Tasks.UserInterface.AskUserTask.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Flubu.Tasks.UserInterface.AskUserTask"/> class using the specified
-            user prompt string.
-            </summary>
-            <param name="prompt">The user prompt string.</param>
-        </member>
-        <member name="M:Flubu.Tasks.UserInterface.AskUserTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String)">
-            <summary>
-            Executes the <see cref="T:Flubu.Tasks.UserInterface.AskUserTask"/> using the specified
-            user prompt string and configuration setting name.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-            <param name="prompt">The user prompt string.</param>
-            <param name="configurationSettingName">Name of the configuration setting where the user input should be stored.</param>
-        </member>
-        <member name="M:Flubu.Tasks.UserInterface.AskUserTask.Execute(Flubu.IScriptExecutionEnvironment,System.String)">
-            <summary>
-            Executes the <see cref="T:Flubu.Tasks.UserInterface.AskUserTask"/> using the specified
-            user prompt string.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-            <param name="prompt">The user prompt string.</param>
-        </member>
-        <member name="M:Flubu.Tasks.UserInterface.AskUserTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
-            <summary>
-            Method defining the actual work for a task.
-            </summary>
-            <param name="environment">The script execution environment.</param>
-        </member>
-        <member name="P:Flubu.Tasks.UserInterface.AskUserTask.TaskDescription">
-            <summary>
-            Gets the task description.
-            </summary>
-            <value>The task description.</value>
-        </member>
         <member name="F:Flubu.Tasks.WindowsServices.ControlWindowsServiceMode.Start">
             <summary>
             Start the Windows service.
@@ -2317,7 +1154,7 @@
             <param name="serviceName">The Windows service name.</param>
             <param name="mode">Mode of the installation.</param>
         </member>
-        <member name="M:Flubu.Tasks.WindowsServices.InstallWindowsServiceTask.Execute(Flubu.IScriptExecutionEnvironment,System.String,System.String,Flubu.Tasks.WindowsServices.InstallWindowsServiceMode)">
+        <member name="M:Flubu.Tasks.WindowsServices.InstallWindowsServiceTask.Execute(Flubu.ITaskContext,System.String,System.String,Flubu.Tasks.WindowsServices.InstallWindowsServiceMode)">
             <summary>
             Executes the task.
             </summary>
@@ -2326,11 +1163,11 @@
             <param name="serviceName">Name of the service.</param>
             <param name="mode">The task mode.</param>
         </member>
-        <member name="M:Flubu.Tasks.WindowsServices.InstallWindowsServiceTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.WindowsServices.InstallWindowsServiceTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Internal task execution code.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
         <member name="P:Flubu.Tasks.WindowsServices.InstallWindowsServiceTask.ServiceUninstallationWaitTime">
             <summary>
@@ -2338,7 +1175,7 @@
             </summary>
             <value>The service uninstallation wait time.</value>
         </member>
-        <member name="P:Flubu.Tasks.WindowsServices.InstallWindowsServiceTask.TaskDescription">
+        <member name="P:Flubu.Tasks.WindowsServices.InstallWindowsServiceTask.Description">
             <summary>
             Gets the task description.
             </summary>
@@ -2356,13 +1193,13 @@
             </summary>
             <param name="serviceName">Name of the service.</param>
         </member>
-        <member name="M:Flubu.Tasks.WindowsServices.StopWindowsServiceIfExistsTask.DoExecute(Flubu.IScriptExecutionEnvironment)">
+        <member name="M:Flubu.Tasks.WindowsServices.StopWindowsServiceIfExistsTask.DoExecute(Flubu.ITaskContext)">
             <summary>
             Method defining the actual work for a task.
             </summary>
-            <param name="environment">The script execution environment.</param>
+            <param name="context">The script execution environment.</param>
         </member>
-        <member name="P:Flubu.Tasks.WindowsServices.StopWindowsServiceIfExistsTask.TaskDescription">
+        <member name="P:Flubu.Tasks.WindowsServices.StopWindowsServiceIfExistsTask.Description">
             <summary>
             Gets the task description.
             </summary>
