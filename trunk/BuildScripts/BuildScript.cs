@@ -9,8 +9,8 @@ using Flubu.Targeting;
 using Flubu.Tasks.Processes;
 using Flubu.Tasks.Text;
 
-//css_ref bin\Debug\Flubu.dll;
-//css_ref bin\Debug\Flubu.Contrib.dll;
+//css_ref Flubu.dll;
+//css_ref Flubu.Contrib.dll;
 
 namespace BuildScripts
 {
