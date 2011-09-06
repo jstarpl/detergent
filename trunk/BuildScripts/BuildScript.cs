@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using Flubu;
 using Flubu.Builds;
@@ -185,22 +186,31 @@ namespace BuildScripts
                 nugetId,
                 context.Properties.Get<Version>(BuildProps.BuildVersion));
             context.WriteInfo("NuGet package file {0} created", nupkgFileName);
-            
+
+            string apiKeyFileName = "NuGet API key.txt";
+            if (!File.Exists(apiKeyFileName))
+            {
+                context.WriteInfo("'NuGet API key.txt' does not exist, cannot publish the package.");
+                return;
+            }
+
+            string apiKey = File.ReadAllText(apiKeyFileName);
+
             // publish the package file
             context.WriteInfo("Pushing the NuGet package to the repository");
-            
-            //progTask = new RunProgramTask(@"lib\NuGet\NuGet.exe");
-            //progTask.SetWorkingDir(destNuspecFile.Directory.ToString());
-            //progTask
-            //    .AddArgument("push")
-            //    .AddArgument(nupkgFileName)
-            //    .AddArgument("hagawaga")
-            //    .AddArgument("-Source")
-            //    .AddArgument("http://ceibuildvm/nuget/")
-            //    .Execute(context);
+
+            progTask = new RunProgramTask(@"lib\NuGet\NuGet.exe");
+            progTask.SetWorkingDir(destNuspecFile.Directory.ToString());
+            progTask
+                .AddArgument("push")
+                .AddArgument(nupkgFileName)
+                .AddArgument(apiKey)
+                .AddArgument("-Source")
+                .AddArgument("http://packages.nuget.org/v1/")
+                .Execute(context);
         }
 
-        private const string CompanyName = "Comtrade d.o.o.";
-        private const string CompanyCopyright = "Copyright (C) 2010 Comtrade d.o.o.";
+        private const string CompanyName = "Igor Brejc";
+        private const string CompanyCopyright = "Copyright (C) 2011 Igor Brejc";
     }
 }

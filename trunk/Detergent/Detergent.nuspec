@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Detergent</id>
-    <title>No more tyranny of SOAP.</title>
+    <title>Detergent: a lightweight alternative to WCF</title>
     <version>$version</version>
     <authors>Igor Brejc</authors>
     <owners>Igor Brejc</owners>
     <projectUrl>http://code.google.com/p/detergent/</projectUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://www.opensource.org/licenses/bsd-license.php</licenseUrl>
     <description>Detergent is a C# library providing a simple interface-based abstraction layer for implementing SOAP and REST Web services and it also contains a simplified MVC framework.
 
