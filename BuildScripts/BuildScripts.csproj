@@ -51,16 +51,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Flubu, Version=1.0.0.0, Culture=neutral, PublicKeyToken=29eb264786dd8746, processorArchitecture=MSIL">
+    <Reference Include="Flubu, Version=1.0.0.0, Culture=neutral, PublicKeyToken=871438ac8d34d66e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Flubu\Flubu.dll</HintPath>
+      <HintPath>.\Flubu.dll</HintPath>
     </Reference>
-    <Reference Include="Flubu.Contrib">
+    <Reference Include="Flubu.Contrib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=871438ac8d34d66e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Flubu.Contrib.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\ICSharpCode.SharpZipLib.2.0\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>.\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
