@@ -21,5 +21,8 @@
   </metadata>
   <files>
     <file src="Detergent\Detergent.*" target="lib" />
+    <file src="Detergent\Microsoft.Http.dll" target="lib" />
+    <file src="Detergent\Microsoft.Http.Extensions.dll" target="lib" />
+    <file src="Detergent\PowerCollections.dll" target="lib" />
   </files>
 </package>
