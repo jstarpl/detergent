@@ -44,7 +44,7 @@ namespace BuildScripts
                 .Do(TargetPackage).DependsOn("load.solution", "fetch.build.version");
 
             targetTree.AddTarget("nuget")
-                .SetDescription("Produces NuGet packages for reusable components and publishes them to our internal NuGet server")
+                .SetDescription("Produces NuGet packages for reusable components and publishes them to the NuGet server")
                 .Do(c =>
                     {
                         TargetNuGet(c, "Detergent");
@@ -61,6 +61,7 @@ namespace BuildScripts
                 //session.Properties.Set(BuildProps.TargetDotNetVersionForGallio, "v4.0.30319");
                 session.Properties.Set(BuildProps.CompanyName, CompanyName);
                 session.Properties.Set(BuildProps.CompanyCopyright, CompanyCopyright);
+                session.Properties.Set(BuildProps.GallioEchoPath, "lib/Gallio-3.2.750/bin/Gallio.Echo.exe");
                 session.Properties.Set(BuildProps.ProductId, "Detergent");
                 session.Properties.Set(BuildProps.ProductName, "Detergent");
                 session.Properties.Set(BuildProps.SolutionFileName, "Detergent.2010.sln");
