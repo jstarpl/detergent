@@ -4,6 +4,7 @@ using MbUnit.Framework;
 
 namespace Detergent.Tests
 {
+    [TestFixture]
     public class RoutingTests
     {
         [Test]
@@ -12,7 +13,7 @@ namespace Detergent.Tests
         public void RouteIsMatch(string queryString)
         {
             Route route = new Route("product/(?<productId>[^//]+)/part/(?<partId>[^//]+)$");
-
+            
             DummyHttpContext context = new DummyHttpContext(
                 "http://google.com/service",
                 "/product/10/part/20",

@@ -1,0 +1,10 @@
+Gallio v3.2.750.0 was generated from the following sources.
+
+Subversion Repository: http://mb-unit.googlecode.com/svn/branches/v3.2
+           Revision: 3119
+
+Please visit the following Url for checkout instructions.
+  http://code.google.com/p/mb-unit/source/checkout
+
+Also refer to the wiki for information about how to debug with symbols and source code.
+  http://www.gallio.org/wiki/gallio:debugging_with_symbols_and_source_code
